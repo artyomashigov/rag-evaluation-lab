@@ -22,7 +22,7 @@
   },
   "metrics": {
     "retrieval_hit_rate": 0.9583,
-    "average_retrieval_latency_ms": 17.786
+    "average_retrieval_latency_ms": 17.041
   },
   "questions": [
     {
@@ -67,7 +67,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 25.923
+      "retrieval_latency_ms": 19.247
     },
     {
       "question_id": "q02",
@@ -111,7 +111,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 20.94
+      "retrieval_latency_ms": 20.077
     },
     {
       "question_id": "q03",
@@ -155,7 +155,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 19.898
+      "retrieval_latency_ms": 15.357
     },
     {
       "question_id": "q04",
@@ -199,7 +199,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.711
+      "retrieval_latency_ms": 18.132
     },
     {
       "question_id": "q05",
@@ -243,7 +243,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.46
+      "retrieval_latency_ms": 13.798
     },
     {
       "question_id": "q06",
@@ -287,7 +287,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.299
+      "retrieval_latency_ms": 16.731
     },
     {
       "question_id": "q07",
@@ -331,7 +331,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 21.135
+      "retrieval_latency_ms": 16.275
     },
     {
       "question_id": "q08",
@@ -375,7 +375,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 19.491
+      "retrieval_latency_ms": 17.161
     },
     {
       "question_id": "q09",
@@ -419,7 +419,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.502
+      "retrieval_latency_ms": 15.399
     },
     {
       "question_id": "q10",
@@ -463,7 +463,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.953
+      "retrieval_latency_ms": 18.741
     },
     {
       "question_id": "q11",
@@ -507,7 +507,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 13.123
+      "retrieval_latency_ms": 12.118
     },
     {
       "question_id": "q12",
@@ -551,7 +551,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 13.777
+      "retrieval_latency_ms": 12.68
     },
     {
       "question_id": "q13",
@@ -595,7 +595,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 18.705
+      "retrieval_latency_ms": 17.382
     },
     {
       "question_id": "q14",
@@ -639,7 +639,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.126
+      "retrieval_latency_ms": 16.455
     },
     {
       "question_id": "q15",
@@ -683,7 +683,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 19.307
+      "retrieval_latency_ms": 18.64
     },
     {
       "question_id": "q16",
@@ -727,7 +727,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.553
+      "retrieval_latency_ms": 17.024
     },
     {
       "question_id": "q17",
@@ -771,7 +771,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 17.713
+      "retrieval_latency_ms": 15.757
     },
     {
       "question_id": "q18",
@@ -815,7 +815,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 21.551
+      "retrieval_latency_ms": 21.534
     },
     {
       "question_id": "q19",
@@ -859,7 +859,7 @@
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 19.198
+      "retrieval_latency_ms": 19.078
     },
     {
       "question_id": "q20",
@@ -903,7 +903,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 20.013
+      "retrieval_latency_ms": 20.698
     },
     {
       "question_id": "q21",
@@ -947,7 +947,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 19.046
+      "retrieval_latency_ms": 18.196
     },
     {
       "question_id": "q22",
@@ -991,7 +991,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 19.771
+      "retrieval_latency_ms": 21.227
     },
     {
       "question_id": "q23",
@@ -1035,7 +1035,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 18.133
+      "retrieval_latency_ms": 17.194
     },
     {
       "question_id": "q24",
@@ -1079,7 +1079,7 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.625
+      "retrieval_latency_ms": 17.553
     },
     {
       "question_id": "q25",
@@ -1123,7 +1123,7 @@
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 14.598
+      "retrieval_latency_ms": 13.71
     },
     {
       "question_id": "q26",
@@ -1167,7 +1167,7 @@
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 15.096
+      "retrieval_latency_ms": 15.655
     },
     {
       "question_id": "q27",
@@ -1211,7 +1211,7 @@
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 13.103
+      "retrieval_latency_ms": 12.906
     },
     {
       "question_id": "q28",
@@ -1255,7 +1255,7 @@
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 19.0
+      "retrieval_latency_ms": 20.354
     },
     {
       "question_id": "q29",
@@ -1299,7 +1299,7 @@
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 18.013
+      "retrieval_latency_ms": 17.136
     },
     {
       "question_id": "q30",
@@ -1343,7 +1343,7 @@
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 13.809
+      "retrieval_latency_ms": 15.03
     }
   ]
 }

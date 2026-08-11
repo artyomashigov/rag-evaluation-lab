@@ -67,6 +67,33 @@ if all(path.exists() for path in comparison_paths):
         "The measured hit rate and latency apply only to this corpus, questions, and machine."
     )
 
+top_five_path = Path("results/top-5.json")
+if top_five_path.exists():
+    top_k_results = [result, json.loads(top_five_path.read_text())]
+    st.subheader("Top-k comparison")
+    st.dataframe(
+        [
+            {
+                "Top-k": item["configuration"]["top_k"],
+                "Evidence per question": sum(
+                    len(question["retrieved_evidence"])
+                    for question in item["questions"]
+                )
+                / len(item["questions"]),
+                "Hit rate": item["metrics"]["retrieval_hit_rate"],
+                "Latency (ms)": item["metrics"]["average_retrieval_latency_ms"],
+            }
+            for item in top_k_results
+        ],
+        hide_index=True,
+    )
+    st.caption(
+        f"Top-5 retrieved two more pieces of evidence per question. Hit rate changed "
+        f"from {top_k_results[0]['metrics']['retrieval_hit_rate']:.0%} to "
+        f"{top_k_results[1]['metrics']['retrieval_hit_rate']:.0%}; more evidence may "
+        "improve coverage, but it also gives the answer stage more text to process."
+    )
+
 question_id = st.selectbox(
     "Question",
     questions,

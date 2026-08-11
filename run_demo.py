@@ -19,4 +19,9 @@ if __name__ == "__main__":
     }
     for chunk_size, output in outputs.items():
         run_evaluation(benchmark, {**baseline, "chunk_size": chunk_size}, output)
-    print(f"Saved {len(outputs)} chunk-size configurations")
+    run_evaluation(
+        benchmark,
+        {**baseline, "chunk_size": 30, "top_k": 5},
+        Path("results/top-5.json"),
+    )
+    print(f"Saved {len(outputs)} chunk-size configurations and the top-5 variant")

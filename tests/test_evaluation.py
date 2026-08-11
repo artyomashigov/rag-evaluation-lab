@@ -71,7 +71,7 @@ class EvaluationRunnerTest(unittest.TestCase):
         configuration = {
             "chunk_size": 4,
             "chunk_overlap": 1,
-            "top_k": 1,
+            "top_k": 3,
             "reranking": False,
             "embedding_model": "deterministic-test",
         }
@@ -87,7 +87,7 @@ class EvaluationRunnerTest(unittest.TestCase):
 
         first_question = result["questions"][0]
         evidence = first_question["retrieved_evidence"]
-        self.assertEqual(len(evidence), 1)
+        self.assertEqual(len(evidence), 3)
         self.assertEqual(evidence[0]["section_id"], "pto.carryover")
         self.assertEqual(evidence[0]["document_id"], "pto-policy")
         self.assertEqual(evidence[0]["text"], "Employees may carry five")
@@ -96,6 +96,23 @@ class EvaluationRunnerTest(unittest.TestCase):
         self.assertGreaterEqual(first_question["retrieval_latency_ms"], 0)
         self.assertEqual(result["metrics"]["retrieval_hit_rate"], 1.0)
         self.assertGreaterEqual(result["metrics"]["average_retrieval_latency_ms"], 0)
+
+        with tempfile.TemporaryDirectory() as directory:
+            top_five = run_evaluation(
+                benchmark,
+                {**configuration, "top_k": 5},
+                Path(directory) / "top-five.json",
+                embedder=keyword_embeddings,
+                tokenizer=token_offsets,
+            )
+
+        self.assertTrue(
+            all(
+                len(question["retrieved_evidence"]) == 5
+                for question in top_five["questions"]
+            )
+        )
+        self.assertEqual(top_five["metrics"]["retrieval_hit_rate"], 1.0)
 
         with tempfile.TemporaryDirectory() as directory:
             large_chunks = run_evaluation(
