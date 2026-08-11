@@ -98,6 +98,13 @@ reranked_path = Path("results/reranked.json")
 reranked_result = json.loads(reranked_path.read_text()) if reranked_path.exists() else None
 if reranked_result:
     reranking_results = [result, reranked_result]
+    additional_hits = round(
+        (
+            reranked_result["metrics"]["retrieval_hit_rate"]
+            - result["metrics"]["retrieval_hit_rate"]
+        )
+        * summary["answerable_count"]
+    )
     st.subheader("Reranking comparison")
     st.dataframe(
         [
@@ -116,7 +123,9 @@ if reranked_result:
         f"{result['metrics']['retrieval_hit_rate']:.0%} to "
         f"{reranked_result['metrics']['retrieval_hit_rate']:.0%} and added "
         f"{reranked_result['metrics']['average_reranking_latency_ms']:.1f} ms. "
-        "That trade-off is specific to this small benchmark."
+        f"Here, recovering {additional_hits} missed answerable question makes that extra "
+        "step worthwhile when coverage matters more than minimum latency. "
+        "That judgment is specific to this small benchmark."
     )
 
 question_id = st.selectbox(

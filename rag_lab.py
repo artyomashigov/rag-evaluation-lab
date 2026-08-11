@@ -78,8 +78,12 @@ def run_evaluation(
             if effective_configuration["reranking"]
             else effective_configuration["top_k"]
         )
-        candidates = [
-            (round(score, 6), chunk, rank)
+        candidates: list[dict[str, Any]] = [
+            {
+                **chunk,
+                "similarity_score": round(score, 6),
+                "original_rank": rank,
+            }
             for rank, (score, chunk) in enumerate(
                 initial_ranking[:candidate_count], start=1
             )
@@ -87,14 +91,12 @@ def run_evaluation(
         retrieval_latency_ms = round((perf_counter() - started) * 1000, 3)
 
         reranking_latency_ms = 0.0
-        ranked: list[
-            tuple[tuple[float, dict[str, Any], int], float | None]
-        ]
+        ranked: list[tuple[dict[str, Any], float | None]]
         if effective_configuration["reranking"]:
             started = perf_counter()
             reranker_scores = rerank(
                 question["question"],
-                [candidate[1]["text"] for candidate in candidates],
+                [candidate["text"] for candidate in candidates],
             )
             ranked = [
                 (candidate, float(score))
@@ -110,9 +112,7 @@ def run_evaluation(
 
         evidence = [
             {
-                **candidate[1],
-                "similarity_score": candidate[0],
-                "original_rank": candidate[2],
+                **candidate,
                 "reranked_position": position
                 if effective_configuration["reranking"]
                 else None,
