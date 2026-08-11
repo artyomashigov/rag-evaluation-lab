@@ -1,0 +1,396 @@
+{
+  "documents": [
+    {
+      "document_id": "pto-policy",
+      "title": "CedarWorks Paid Time Off Policy (Synthetic)",
+      "sections": [
+        {
+          "section_id": "pto.accrual",
+          "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportionally."
+        },
+        {
+          "section_id": "pto.carryover",
+          "text": "Employees may carry over up to five unused PTO days into the next calendar year. Additional unused days expire on December 31."
+        },
+        {
+          "section_id": "pto.notice",
+          "text": "Planned PTO requests require at least two business days of notice and manager approval. Unexpected illness should be reported as soon as practical."
+        }
+      ]
+    },
+    {
+      "document_id": "remote-work-policy",
+      "title": "CedarWorks Remote Work Policy (Synthetic)",
+      "sections": [
+        {
+          "section_id": "remote.eligibility",
+          "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours."
+        },
+        {
+          "section_id": "remote.location",
+          "text": "Remote work must take place from the employee's approved home state. Working temporarily from another state requires written approval from People Operations before travel."
+        },
+        {
+          "section_id": "remote.equipment",
+          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair, monitor, or internet equipment, but not monthly internet service."
+        }
+      ]
+    },
+    {
+      "document_id": "expense-policy",
+      "title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
+      "sections": [
+        {
+          "section_id": "expense.receipts",
+          "text": "Receipts are required for individual expenses of $25 or more. Approved reimbursements are processed within 10 business days and are separate from payroll."
+        },
+        {
+          "section_id": "expense.meals",
+          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on the receipt."
+        },
+        {
+          "section_id": "expense.travel",
+          "text": "Air and rail travel should be booked at least 14 days in advance. Bookings made later require manager approval and a short business justification."
+        }
+      ]
+    },
+    {
+      "document_id": "benefits-guide",
+      "title": "CedarWorks Benefits Guide (Synthetic)",
+      "sections": [
+        {
+          "section_id": "benefits.enrollment",
+          "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life event."
+        },
+        {
+          "section_id": "benefits.health",
+          "text": "Health coverage begins on the first day of the month after enrollment is completed. Coverage includes medical, dental, and vision plans."
+        },
+        {
+          "section_id": "benefits.retirement",
+          "text": "CedarWorks matches 50% of employee retirement contributions up to 6% of eligible pay. Employees may change their contribution percentage at any time."
+        }
+      ]
+    },
+    {
+      "document_id": "payroll-guide",
+      "title": "CedarWorks Payroll Guide (Synthetic)",
+      "sections": [
+        {
+          "section_id": "payroll.schedule",
+          "text": "Employees are paid every other Friday. If Friday is a bank holiday, direct deposits are issued on the preceding business day."
+        },
+        {
+          "section_id": "payroll.direct-deposit",
+          "text": "Direct-deposit changes submitted in the payroll portal may take one full payroll cycle to become effective. Employees should keep the previous account open until the change appears."
+        },
+        {
+          "section_id": "payroll.corrections",
+          "text": "Employees should report a suspected pay error to Payroll within five business days of the pay date. Confirmed underpayments are corrected within three business days."
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "question_id": "q01",
+      "question": "How many unused PTO days can an employee carry into next year?",
+      "category": "direct",
+      "answerable": true,
+      "expected_section": "pto.carryover",
+      "reference_answer": "Up to five unused PTO days.",
+      "expected_abstention": false,
+      "reviewer_note": "Direct lookup of the carryover limit."
+    },
+    {
+      "question_id": "q02",
+      "question": "How much PTO does a full-time employee accrue each month?",
+      "category": "direct",
+      "answerable": true,
+      "expected_section": "pto.accrual",
+      "reference_answer": "1.5 days after each completed month.",
+      "expected_abstention": false,
+      "reviewer_note": "Direct lookup of the monthly accrual rate."
+    },
+    {
+      "question_id": "q03",
+      "question": "How much notice is required for planned PTO?",
+      "category": "direct",
+      "answerable": true,
+      "expected_section": "pto.notice",
+      "reference_answer": "At least two business days plus manager approval.",
+      "expected_abstention": false,
+      "reviewer_note": "Direct lookup of the planned-leave notice rule."
+    },
+    {
+      "question_id": "q04",
+      "question": "When does an employee become eligible for scheduled remote work?",
+      "category": "direct",
+      "answerable": true,
+      "expected_section": "remote.eligibility",
+      "reference_answer": "After 90 days of employment with manager approval.",
+      "expected_abstention": false,
+      "reviewer_note": "Direct lookup of the eligibility period."
+    },
+    {
+      "question_id": "q05",
+      "question": "Where may an employee perform remote work?",
+      "category": "direct",
+      "answerable": true,
+      "expected_section": "remote.location",
+      "reference_answer": "From the approved home state unless People Operations approves another state in writing.",
+      "expected_abstention": false,
+      "reviewer_note": "Direct lookup of the location restriction."
+    },
+    {
+      "question_id": "q06",
+      "question": "What is the maximum home-office stipend?",
+      "category": "direct",
+      "answerable": true,
+      "expected_section": "remote.equipment",
+      "reference_answer": "Up to $500 once.",
+      "expected_abstention": false,
+      "reviewer_note": "Direct lookup of the equipment allowance."
+    },
+    {
+      "question_id": "q07",
+      "question": "At what amount is a receipt required for an expense?",
+      "category": "direct",
+      "answerable": true,
+      "expected_section": "expense.receipts",
+      "reference_answer": "For individual expenses of $25 or more.",
+      "expected_abstention": false,
+      "reviewer_note": "Direct lookup of the receipt threshold."
+    },
+    {
+      "question_id": "q08",
+      "question": "What is the daily limit for business-travel meals?",
+      "category": "direct",
+      "answerable": true,
+      "expected_section": "expense.meals",
+      "reference_answer": "$60 per day.",
+      "expected_abstention": false,
+      "reviewer_note": "Direct lookup of the meal limit."
+    },
+    {
+      "question_id": "q09",
+      "question": "How early should air or rail travel be booked?",
+      "category": "direct",
+      "answerable": true,
+      "expected_section": "expense.travel",
+      "reference_answer": "At least 14 days in advance.",
+      "expected_abstention": false,
+      "reviewer_note": "Direct lookup of the advance-booking rule."
+    },
+    {
+      "question_id": "q10",
+      "question": "How long does a new employee have to enroll in benefits?",
+      "category": "direct",
+      "answerable": true,
+      "expected_section": "benefits.enrollment",
+      "reference_answer": "30 calendar days from the start date.",
+      "expected_abstention": false,
+      "reviewer_note": "Direct lookup of the new-hire enrollment window."
+    },
+    {
+      "question_id": "q11",
+      "question": "When does health coverage begin?",
+      "category": "direct",
+      "answerable": true,
+      "expected_section": "benefits.health",
+      "reference_answer": "The first day of the month after enrollment is completed.",
+      "expected_abstention": false,
+      "reviewer_note": "Direct lookup of the coverage start date."
+    },
+    {
+      "question_id": "q12",
+      "question": "How often are employees paid?",
+      "category": "direct",
+      "answerable": true,
+      "expected_section": "payroll.schedule",
+      "reference_answer": "Every other Friday.",
+      "expected_abstention": false,
+      "reviewer_note": "Direct lookup of the payroll schedule."
+    },
+    {
+      "question_id": "q13",
+      "question": "What happens to vacation time I still have at year end?",
+      "category": "paraphrase",
+      "answerable": true,
+      "expected_section": "pto.carryover",
+      "reference_answer": "Up to five days carry over; any additional unused days expire on December 31.",
+      "expected_abstention": false,
+      "reviewer_note": "Uses vacation-time wording instead of PTO carryover."
+    },
+    {
+      "question_id": "q14",
+      "question": "When will my new bank account start receiving my pay?",
+      "category": "paraphrase",
+      "answerable": true,
+      "expected_section": "payroll.direct-deposit",
+      "reference_answer": "A direct-deposit change may take one full payroll cycle.",
+      "expected_abstention": false,
+      "reviewer_note": "Paraphrases a direct-deposit update."
+    },
+    {
+      "question_id": "q15",
+      "question": "What should I do if money is missing from my paycheck?",
+      "category": "paraphrase",
+      "answerable": true,
+      "expected_section": "payroll.corrections",
+      "reference_answer": "Report the suspected error to Payroll within five business days of the pay date.",
+      "expected_abstention": false,
+      "reviewer_note": "Paraphrases a suspected underpayment."
+    },
+    {
+      "question_id": "q16",
+      "question": "How much does the company add to my retirement savings?",
+      "category": "paraphrase",
+      "answerable": true,
+      "expected_section": "benefits.retirement",
+      "reference_answer": "It matches 50% of contributions up to 6% of eligible pay.",
+      "expected_abstention": false,
+      "reviewer_note": "Paraphrases the employer retirement match."
+    },
+    {
+      "question_id": "q17",
+      "question": "Will the company pay my monthly home internet bill?",
+      "category": "paraphrase",
+      "answerable": true,
+      "expected_section": "remote.equipment",
+      "reference_answer": "No. The stipend can cover internet equipment but not monthly internet service.",
+      "expected_abstention": false,
+      "reviewer_note": "Tests the distinction between equipment and recurring service."
+    },
+    {
+      "question_id": "q18",
+      "question": "What approval do I need if I book a flight less than two weeks ahead?",
+      "category": "paraphrase",
+      "answerable": true,
+      "expected_section": "expense.travel",
+      "reference_answer": "Manager approval and a short business justification.",
+      "expected_abstention": false,
+      "reviewer_note": "Paraphrases late travel booking."
+    },
+    {
+      "question_id": "q19",
+      "question": "Does a scheduled work-from-home day reduce my PTO balance?",
+      "category": "similar_policy",
+      "answerable": true,
+      "expected_section": "remote.eligibility",
+      "reference_answer": "No. Remote work is not leave and normal working hours still apply.",
+      "expected_abstention": false,
+      "reviewer_note": "Distinguishes remote work from paid leave."
+    },
+    {
+      "question_id": "q20",
+      "question": "Should I use the home-office allowance or travel expenses for an office chair?",
+      "category": "similar_policy",
+      "answerable": true,
+      "expected_section": "remote.equipment",
+      "reference_answer": "Use the home-office stipend, which may cover a chair.",
+      "expected_abstention": false,
+      "reviewer_note": "Distinguishes remote equipment from travel expenses."
+    },
+    {
+      "question_id": "q21",
+      "question": "A client dinner exceeded $60. Is a receipt alone enough?",
+      "category": "similar_policy",
+      "answerable": true,
+      "expected_section": "expense.meals",
+      "reference_answer": "No. It also requires written director approval and the client's name on the receipt.",
+      "expected_abstention": false,
+      "reviewer_note": "Distinguishes the general receipt rule from the client-meal exception."
+    },
+    {
+      "question_id": "q22",
+      "question": "Can a new hire wait until annual open enrollment to choose benefits?",
+      "category": "similar_policy",
+      "answerable": true,
+      "expected_section": "benefits.enrollment",
+      "reference_answer": "They may, but their initial enrollment window is the first 30 calendar days after starting.",
+      "expected_abstention": false,
+      "reviewer_note": "Distinguishes new-hire enrollment from annual open enrollment."
+    },
+    {
+      "question_id": "q23",
+      "question": "Will an approved expense reimbursement arrive with my next paycheck?",
+      "category": "similar_policy",
+      "answerable": true,
+      "expected_section": "expense.receipts",
+      "reference_answer": "Not necessarily. Reimbursements are processed separately from payroll within 10 business days.",
+      "expected_abstention": false,
+      "reviewer_note": "Distinguishes reimbursements from the payroll schedule."
+    },
+    {
+      "question_id": "q24",
+      "question": "May I work remotely from another state while visiting family?",
+      "category": "similar_policy",
+      "answerable": true,
+      "expected_section": "remote.location",
+      "reference_answer": "Only with written People Operations approval before travel.",
+      "expected_abstention": false,
+      "reviewer_note": "Distinguishes normal home-state work from temporary out-of-state work."
+    },
+    {
+      "question_id": "q25",
+      "question": "Does the benefits plan include pet insurance?",
+      "category": "unanswerable",
+      "answerable": false,
+      "expected_section": null,
+      "reference_answer": null,
+      "expected_abstention": true,
+      "reviewer_note": "Pet insurance is not mentioned in the corpus."
+    },
+    {
+      "question_id": "q26",
+      "question": "Will CedarWorks pay for an international relocation?",
+      "category": "unanswerable",
+      "answerable": false,
+      "expected_section": null,
+      "reference_answer": null,
+      "expected_abstention": true,
+      "reviewer_note": "Relocation benefits are not mentioned in the corpus."
+    },
+    {
+      "question_id": "q27",
+      "question": "Can employees receive payroll in cryptocurrency?",
+      "category": "unanswerable",
+      "answerable": false,
+      "expected_section": null,
+      "reference_answer": null,
+      "expected_abstention": true,
+      "reviewer_note": "Cryptocurrency payment is not mentioned in the corpus."
+    },
+    {
+      "question_id": "q28",
+      "question": "How many weeks of sabbatical are available after five years?",
+      "category": "unanswerable",
+      "answerable": false,
+      "expected_section": null,
+      "reference_answer": null,
+      "expected_abstention": true,
+      "reviewer_note": "Sabbatical leave is not mentioned in the corpus."
+    },
+    {
+      "question_id": "q29",
+      "question": "What is the annual tuition-reimbursement limit?",
+      "category": "unanswerable",
+      "answerable": false,
+      "expected_section": null,
+      "reference_answer": null,
+      "expected_abstention": true,
+      "reviewer_note": "Tuition reimbursement is not mentioned in the corpus."
+    },
+    {
+      "question_id": "q30",
+      "question": "Which office parking garage should employees use?",
+      "category": "unanswerable",
+      "answerable": false,
+      "expected_section": null,
+      "reference_answer": null,
+      "expected_abstention": true,
+      "reviewer_note": "Office parking is not mentioned in the corpus."
+    }
+  ]
+}

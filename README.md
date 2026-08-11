@@ -1,6 +1,6 @@
 # RAG Evaluation Lab
 
-A minimal offline tracer for evaluating whether retrieval finds the expected policy section.
+An offline RAG benchmark over five synthetic employee-policy documents and 30 labeled questions.
 
 ## Run locally
 
