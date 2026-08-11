@@ -1,4 +1,5 @@
 import json
+import re
 import tempfile
 import unittest
 from copy import deepcopy
@@ -13,6 +14,10 @@ def keyword_embeddings(texts: list[str]) -> list[list[float]]:
         [float(word in text.lower()) for word in vocabulary]
         for text in texts
     ]
+
+
+def token_offsets(text: str) -> list[tuple[int, int]]:
+    return [(match.start(), match.end()) for match in re.finditer(r"\w+|[^\w\s]", text)]
 
 
 class EvaluationRunnerTest(unittest.TestCase):
@@ -77,6 +82,7 @@ class EvaluationRunnerTest(unittest.TestCase):
                 configuration,
                 Path(directory) / "result.json",
                 embedder=keyword_embeddings,
+                tokenizer=token_offsets,
             )
 
         first_question = result["questions"][0]
@@ -137,6 +143,7 @@ class EvaluationRunnerTest(unittest.TestCase):
                 {"top_k": 1},
                 Path(directory) / "result.json",
                 embedder=keyword_embeddings,
+                tokenizer=token_offsets,
             )
 
         self.assertEqual(
@@ -193,8 +200,19 @@ class EvaluationRunnerTest(unittest.TestCase):
                 {"top_k": 1},
                 output,
                 embedder=keyword_embeddings,
+                tokenizer=token_offsets,
             )
 
+            self.assertEqual(
+                result["configuration"],
+                {
+                    "chunk_size": 700,
+                    "chunk_overlap": 0,
+                    "top_k": 1,
+                    "reranking": False,
+                    "embedding_model": "Alibaba-NLP/gte-modernbert-base",
+                },
+            )
             self.assertTrue(result["questions"][0]["retrieval_hit"])
             self.assertEqual(
                 result["questions"][0]["retrieved_evidence"][0]["section_id"],

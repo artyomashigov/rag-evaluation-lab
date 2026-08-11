@@ -14,6 +14,7 @@ if not result_path.exists():
     st.stop()
 
 result = json.loads(result_path.read_text())
+configuration = result["configuration"]
 summary = result["benchmark_summary"]
 metrics = result["metrics"]
 questions = {question["question_id"]: question for question in result["questions"]}
@@ -29,7 +30,12 @@ metric_columns[0].metric("Retrieval hit rate", f"{metrics['retrieval_hit_rate']:
 metric_columns[1].metric(
     "Average retrieval latency", f"{metrics['average_retrieval_latency_ms']:.1f} ms"
 )
-st.caption("Recorded locally with 700-token chunks, 70-token overlap, top-3, and no reranking.")
+st.caption(
+    f"Recorded locally with {configuration['chunk_size']}-token chunks, "
+    f"{configuration['chunk_overlap']}-token overlap, "
+    f"top-{configuration['top_k']}, and "
+    f"reranking {'on' if configuration['reranking'] else 'off'}."
+)
 
 question_id = st.selectbox(
     "Question",

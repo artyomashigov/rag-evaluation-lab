@@ -1,5 +1,4 @@
 import json
-import re
 from collections import Counter
 from functools import lru_cache
 from pathlib import Path
@@ -8,6 +7,7 @@ from typing import Any, Callable, Mapping
 
 
 Embedder = Callable[[list[str]], list[list[float]]]
+Tokenizer = Callable[[str], list[tuple[int, int]]]
 
 
 def run_evaluation(
@@ -16,18 +16,29 @@ def run_evaluation(
     output: Path,
     *,
     embedder: Embedder | None = None,
+    tokenizer: Tokenizer | None = None,
 ) -> dict[str, Any]:
     """Evaluate a benchmark and save the result for the dashboard."""
     _validate_benchmark(benchmark)
     documents = benchmark["documents"]
     questions = benchmark["questions"]
-    top_k = configuration["top_k"]
-    chunk_size = configuration.get("chunk_size", 700)
-    chunk_overlap = configuration.get("chunk_overlap", 0)
-    model_name = configuration.get(
-        "embedding_model", "sentence-transformers/all-MiniLM-L6-v2"
+    effective_configuration = {
+        "chunk_size": configuration.get("chunk_size", 700),
+        "chunk_overlap": configuration.get("chunk_overlap", 0),
+        "top_k": configuration["top_k"],
+        "reranking": configuration.get("reranking", False),
+        "embedding_model": configuration.get(
+            "embedding_model", "Alibaba-NLP/gte-modernbert-base"
+        ),
+    }
+    model_name = effective_configuration["embedding_model"]
+    tokenize = tokenizer or (lambda text: _local_token_offsets(text, model_name))
+    chunks = _chunk_documents(
+        documents,
+        effective_configuration["chunk_size"],
+        effective_configuration["chunk_overlap"],
+        tokenize,
     )
-    chunks = _chunk_documents(documents, chunk_size, chunk_overlap)
     embed = embedder or (lambda texts: _local_embeddings(texts, model_name))
     chunk_embeddings = embed([chunk["text"] for chunk in chunks])
     question_results = []
@@ -36,16 +47,19 @@ def run_evaluation(
         started = perf_counter()
         query_embedding = embed([question["question"]])[0]
         ranked = sorted(
-            zip(chunks, chunk_embeddings),
-            key=lambda item: _dot_product(query_embedding, item[1]),
+            (
+                (_dot_product(query_embedding, vector), chunk)
+                for chunk, vector in zip(chunks, chunk_embeddings)
+            ),
             reverse=True,
-        )[:top_k]
+            key=lambda item: item[0],
+        )[: effective_configuration["top_k"]]
         evidence = [
             {
                 **chunk,
-                "similarity_score": round(_dot_product(query_embedding, vector), 6),
+                "similarity_score": round(score, 6),
             }
-            for chunk, vector in ranked
+            for score, chunk in ranked
         ]
         latency_ms = round((perf_counter() - started) * 1000, 3)
         question_results.append(
@@ -61,7 +75,7 @@ def run_evaluation(
 
     answerable_results = [result for result in question_results if result["answerable"]]
     result = {
-        "configuration": dict(configuration),
+        "configuration": effective_configuration,
         "benchmark_summary": {
             "document_count": len(documents),
             "section_count": sum(len(document["sections"]) for document in documents),
@@ -95,7 +109,10 @@ def run_evaluation(
 
 
 def _chunk_documents(
-    documents: list[dict[str, Any]], chunk_size: int, overlap: int
+    documents: list[dict[str, Any]],
+    chunk_size: int,
+    overlap: int,
+    tokenize: Tokenizer,
 ) -> list[dict[str, Any]]:
     if chunk_size < 1 or overlap < 0 or overlap >= chunk_size:
         raise ValueError("Chunk size must be positive and overlap must be smaller")
@@ -104,13 +121,13 @@ def _chunk_documents(
     step = chunk_size - overlap
     for document in documents:
         for section in document["sections"]:
-            words = list(re.finditer(r"\S+", section["text"]))
-            for word_start in range(0, len(words), step):
-                selected = words[word_start : word_start + chunk_size]
+            tokens = tokenize(section["text"])
+            for token_start in range(0, len(tokens), step):
+                selected = tokens[token_start : token_start + chunk_size]
                 if not selected:
                     break
-                start_char = selected[0].start()
-                end_char = selected[-1].end()
+                start_char = selected[0][0]
+                end_char = selected[-1][1]
                 chunks.append(
                     {
                         "chunk_id": f"{section['section_id']}:{start_char}-{end_char}",
@@ -122,7 +139,7 @@ def _chunk_documents(
                         "text": section["text"][start_char:end_char],
                     }
                 )
-                if word_start + chunk_size >= len(words):
+                if token_start + chunk_size >= len(tokens):
                     break
     return chunks
 
@@ -143,6 +160,20 @@ def _local_embeddings(texts: list[str], model_name: str) -> list[list[float]]:
         texts, normalize_embeddings=True, show_progress_bar=False
     )
     return embeddings.tolist()
+
+
+def _local_token_offsets(text: str, model_name: str) -> list[tuple[int, int]]:
+    encoded = _embedding_model(model_name).tokenizer(
+        text,
+        add_special_tokens=False,
+        return_offsets_mapping=True,
+        truncation=False,
+    )
+    return [
+        (int(start), int(end))
+        for start, end in encoded["offset_mapping"]
+        if end > start
+    ]
 
 
 def _validate_benchmark(benchmark: Mapping[str, Any]) -> None:
