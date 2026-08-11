@@ -9,6 +9,18 @@ from typing import Any, Callable, Mapping
 Embedder = Callable[[list[str]], list[list[float]]]
 Tokenizer = Callable[[str], list[tuple[int, int]]]
 Reranker = Callable[[str, list[str]], list[float]]
+AnswerGenerator = Callable[[str, list[dict[str, Any]], str], dict[str, Any]]
+
+ANSWER_FIELDS = (
+    "answer",
+    "citations",
+    "abstained",
+    "answer_model",
+    "input_tokens",
+    "output_tokens",
+    "generation_latency_ms",
+    "estimated_cost_usd",
+)
 
 
 def run_evaluation(
@@ -19,6 +31,8 @@ def run_evaluation(
     embedder: Embedder | None = None,
     tokenizer: Tokenizer | None = None,
     reranker: Reranker | None = None,
+    answer_generator: AnswerGenerator | None = None,
+    allow_paid_calls: bool = False,
 ) -> dict[str, Any]:
     """Evaluate a benchmark and save the result for the dashboard."""
     _validate_benchmark(benchmark)
@@ -36,7 +50,20 @@ def run_evaluation(
         "reranker_model": configuration.get(
             "reranker_model", "cross-encoder/ms-marco-MiniLM-L6-v2"
         ),
+        "generate_answers": configuration.get("generate_answers", False),
+        "answer_model": configuration.get("answer_model", "gpt-5.6-luna"),
     }
+    pricing = configuration.get(
+        "price_snapshot",
+        {
+            "date": "2026-08-11",
+            "currency": "USD",
+            "input_usd_per_million_tokens": 0.2,
+            "output_usd_per_million_tokens": 1.2,
+        },
+    )
+    if effective_configuration["generate_answers"] and not allow_paid_calls:
+        raise PermissionError("Answer generation requires allow_paid_calls=True")
     if effective_configuration["top_k"] < 1:
         raise ValueError("Top-k must be positive")
     if (
@@ -59,8 +86,23 @@ def run_evaluation(
             query, texts, effective_configuration["reranker_model"]
         )
     )
+    generate_answer = answer_generator or _openai_answer
     chunk_embeddings = embed([chunk["text"] for chunk in chunks])
     question_results = []
+    completed_answers: dict[str, dict[str, Any]] = {}
+    if effective_configuration["generate_answers"] and output.exists():
+        previous = json.loads(output.read_text())
+        if (
+            previous.get("configuration") == effective_configuration
+            and previous.get("pricing") == pricing
+        ):
+            completed_answers = {
+                item["question_id"]: item
+                for item in previous.get("questions", [])
+                if isinstance(item.get("answer"), str)
+            }
+
+    output.parent.mkdir(parents=True, exist_ok=True)
 
     for question in questions:
         started = perf_counter()
@@ -120,21 +162,86 @@ def run_evaluation(
             }
             for position, (candidate, score) in enumerate(ranked, start=1)
         ]
-        question_results.append(
-            {
-                **question,
-                "retrieved_evidence": evidence,
-                "retrieval_hit": question["expected_section"] is not None
-                and question["expected_section"]
-                in {chunk["section_id"] for chunk in evidence},
-                "retrieval_latency_ms": retrieval_latency_ms,
-                "reranking_latency_ms": reranking_latency_ms,
-            }
-        )
+        question_result = {
+            **question,
+            "retrieved_evidence": evidence,
+            "retrieval_hit": question["expected_section"] is not None
+            and question["expected_section"]
+            in {chunk["section_id"] for chunk in evidence},
+            "retrieval_latency_ms": retrieval_latency_ms,
+            "reranking_latency_ms": reranking_latency_ms,
+            "answer": None,
+            "citations": [],
+            "abstained": None,
+            "answer_model": effective_configuration["answer_model"],
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "generation_latency_ms": 0.0,
+            "estimated_cost_usd": 0.0,
+        }
+        previous_answer = completed_answers.get(question["question_id"])
+        if previous_answer:
+            question_result.update(
+                {field: previous_answer[field] for field in ANSWER_FIELDS}
+            )
+        elif effective_configuration["generate_answers"]:
+            started = perf_counter()
+            generated = generate_answer(
+                question["question"], evidence, effective_configuration["answer_model"]
+            )
+            generation_latency_ms = round((perf_counter() - started) * 1000, 3)
+            citations = generated["citations"]
+            evidence_sections = {item["section_id"] for item in evidence}
+            if (
+                not isinstance(generated["answer"], str)
+                or not generated["answer"].strip()
+                or not isinstance(citations, list)
+                or not isinstance(generated["abstained"], bool)
+                or not all(
+                    isinstance(citation, str) and citation in evidence_sections
+                    for citation in citations
+                )
+                or (not generated["abstained"] and not citations)
+                or (generated["abstained"] and citations)
+            ):
+                raise ValueError("Answer must cite retrieved sections or abstain")
+            input_tokens = int(generated["input_tokens"])
+            output_tokens = int(generated["output_tokens"])
+            if input_tokens < 0 or output_tokens < 0:
+                raise ValueError("Token counts cannot be negative")
+            estimated_cost = (
+                input_tokens * pricing["input_usd_per_million_tokens"]
+                + output_tokens * pricing["output_usd_per_million_tokens"]
+            ) / 1_000_000
+            question_result.update(
+                {
+                    **generated,
+                    "answer_model": effective_configuration["answer_model"],
+                    "input_tokens": input_tokens,
+                    "output_tokens": output_tokens,
+                    "generation_latency_ms": generation_latency_ms,
+                    "estimated_cost_usd": round(estimated_cost, 8),
+                }
+            )
+        question_results.append(question_result)
+        if effective_configuration["generate_answers"]:
+            _write_json(
+                output,
+                {
+                    "status": "in_progress",
+                    "configuration": effective_configuration,
+                    "pricing": pricing,
+                    "questions": question_results,
+                },
+            )
 
     answerable_results = [result for result in question_results if result["answerable"]]
+    total_input_tokens = sum(item["input_tokens"] for item in question_results)
+    total_output_tokens = sum(item["output_tokens"] for item in question_results)
     result = {
+        "status": "complete",
         "configuration": effective_configuration,
+        "pricing": pricing,
         "benchmark_summary": {
             "document_count": len(documents),
             "section_count": sum(len(document["sections"]) for document in documents),
@@ -164,11 +271,25 @@ def run_evaluation(
                 / len(question_results),
                 3,
             ),
+            "average_generation_latency_ms": round(
+                sum(item["generation_latency_ms"] for item in question_results)
+                / len(question_results),
+                3,
+            ),
+            "input_tokens": total_input_tokens,
+            "output_tokens": total_output_tokens,
+            "estimated_cost_usd": round(
+                (
+                    total_input_tokens * pricing["input_usd_per_million_tokens"]
+                    + total_output_tokens * pricing["output_usd_per_million_tokens"]
+                )
+                / 1_000_000,
+                8,
+            ),
         },
         "questions": question_results,
     }
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(result, indent=2) + "\n")
+    _write_json(output, result)
     return result
 
 
@@ -210,6 +331,12 @@ def _chunk_documents(
 
 def _dot_product(left: list[float], right: list[float]) -> float:
     return sum(a * b for a, b in zip(left, right))
+
+
+def _write_json(output: Path, value: Mapping[str, Any]) -> None:
+    temporary = output.with_suffix(f"{output.suffix}.tmp")
+    temporary.write_text(json.dumps(value, indent=2) + "\n")
+    temporary.replace(output)
 
 
 @lru_cache(maxsize=1)
@@ -254,6 +381,66 @@ def _local_token_offsets(text: str, model_name: str) -> list[tuple[int, int]]:
         for start, end in encoded["offset_mapping"]
         if end > start
     ]
+
+
+def _openai_answer(
+    question: str, evidence: list[dict[str, Any]], model_name: str
+) -> dict[str, Any]:
+    from openai import OpenAI
+
+    response = OpenAI().responses.create(
+        model=model_name,
+        reasoning={"effort": "none"},
+        store=False,
+        input=[
+            {
+                "role": "system",
+                "content": (
+                    "Answer only from the supplied evidence. Cite source section IDs. "
+                    "If the evidence is insufficient, abstain and return no citations."
+                ),
+            },
+            {
+                "role": "user",
+                "content": json.dumps(
+                    {
+                        "question": question,
+                        "evidence": [
+                            {
+                                "section_id": item["section_id"],
+                                "text": item["text"],
+                            }
+                            for item in evidence
+                        ],
+                    }
+                ),
+            },
+        ],
+        text={
+            "format": {
+                "type": "json_schema",
+                "name": "grounded_answer",
+                "strict": True,
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "answer": {"type": "string"},
+                        "citations": {
+                            "type": "array",
+                            "items": {"type": "string"},
+                        },
+                        "abstained": {"type": "boolean"},
+                    },
+                    "required": ["answer", "citations", "abstained"],
+                    "additionalProperties": False,
+                },
+            }
+        },
+    )
+    generated = json.loads(response.output_text)
+    generated["input_tokens"] = response.usage.input_tokens
+    generated["output_tokens"] = response.usage.output_tokens
+    return generated
 
 
 def _validate_benchmark(benchmark: Mapping[str, Any]) -> None:

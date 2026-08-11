@@ -25,6 +25,109 @@ def prefer_payroll(_query: str, texts: list[str]) -> list[float]:
 
 
 class EvaluationRunnerTest(unittest.TestCase):
+    def test_paid_generation_requires_explicit_permission(self) -> None:
+        benchmark = json.loads(Path("data/benchmark.json").read_text())
+
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "result.json"
+            with self.assertRaisesRegex(PermissionError, "allow_paid_calls"):
+                run_evaluation(
+                    benchmark,
+                    {"top_k": 1, "generate_answers": True},
+                    output,
+                    embedder=keyword_embeddings,
+                    tokenizer=token_offsets,
+                )
+            self.assertFalse(output.exists())
+
+    def test_paid_answers_are_checkpointed_and_resumed(self) -> None:
+        benchmark = json.loads(Path("data/benchmark.json").read_text())
+        configuration = {
+            "top_k": 1,
+            "generate_answers": True,
+            "answer_model": "deterministic-answer-model",
+            "price_snapshot": {
+                "date": "2026-08-11",
+                "currency": "USD",
+                "input_usd_per_million_tokens": 0.2,
+                "output_usd_per_million_tokens": 1.2,
+            },
+        }
+        first_run_calls: list[str] = []
+
+        def fail_second_question(
+            question: str, evidence: list[dict[str, object]], _model: str
+        ) -> dict[str, object]:
+            first_run_calls.append(question)
+            if len(first_run_calls) == 2:
+                raise RuntimeError("provider failed")
+            return {
+                "answer": "Up to five unused PTO days [pto.carryover].",
+                "citations": [evidence[0]["section_id"]],
+                "abstained": False,
+                "input_tokens": 10,
+                "output_tokens": 5,
+            }
+
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "result.json"
+            with self.assertRaisesRegex(RuntimeError, "provider failed"):
+                run_evaluation(
+                    benchmark,
+                    configuration,
+                    output,
+                    embedder=keyword_embeddings,
+                    tokenizer=token_offsets,
+                    answer_generator=fail_second_question,
+                    allow_paid_calls=True,
+                )
+
+            checkpoint = json.loads(output.read_text())
+            self.assertEqual(checkpoint["status"], "in_progress")
+            self.assertEqual(len(checkpoint["questions"]), 1)
+            checkpointed_question = checkpoint["questions"][0]
+            self.assertEqual(checkpointed_question["citations"], ["pto.carryover"])
+            self.assertFalse(checkpointed_question["abstained"])
+            self.assertEqual(checkpointed_question["input_tokens"], 10)
+            self.assertEqual(checkpointed_question["output_tokens"], 5)
+            self.assertEqual(
+                checkpointed_question["answer_model"], "deterministic-answer-model"
+            )
+            self.assertEqual(checkpoint["pricing"], configuration["price_snapshot"])
+
+            resume_calls: list[str] = []
+
+            def complete_answer(
+                question: str, evidence: list[dict[str, object]], _model: str
+            ) -> dict[str, object]:
+                resume_calls.append(question)
+                return {
+                    "answer": f"Grounded answer [{evidence[0]['section_id']}].",
+                    "citations": [evidence[0]["section_id"]],
+                    "abstained": False,
+                    "input_tokens": 10,
+                    "output_tokens": 5,
+                }
+
+            result = run_evaluation(
+                benchmark,
+                configuration,
+                output,
+                embedder=keyword_embeddings,
+                tokenizer=token_offsets,
+                answer_generator=complete_answer,
+                allow_paid_calls=True,
+            )
+
+        self.assertNotIn(benchmark["questions"][0]["question"], resume_calls)
+        self.assertEqual(len(resume_calls), 29)
+        self.assertEqual(result["status"], "complete")
+        self.assertEqual(result["questions"][0]["estimated_cost_usd"], 0.000008)
+        self.assertGreaterEqual(result["questions"][0]["generation_latency_ms"], 0)
+        self.assertEqual(result["metrics"]["input_tokens"], 300)
+        self.assertEqual(result["metrics"]["output_tokens"], 150)
+        self.assertEqual(result["metrics"]["estimated_cost_usd"], 0.00024)
+
     def test_baseline_retrieval_returns_ranked_source_chunks_and_metrics(self) -> None:
         benchmark = {
             "documents": [
@@ -276,6 +379,8 @@ class EvaluationRunnerTest(unittest.TestCase):
                     "candidate_pool_size": 10,
                     "embedding_model": "Alibaba-NLP/gte-modernbert-base",
                     "reranker_model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+                    "generate_answers": False,
+                    "answer_model": "gpt-5.6-luna",
                 },
             )
             self.assertTrue(result["questions"][0]["retrieval_hit"])

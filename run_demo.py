@@ -1,3 +1,4 @@
+import argparse
 import json
 from pathlib import Path
 
@@ -5,6 +6,13 @@ from rag_lab import run_evaluation
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--allow-paid-calls",
+        action="store_true",
+        help="Generate answers with the configured paid model and checkpoint each one.",
+    )
+    arguments = parser.parse_args()
     benchmark = json.loads(Path("data/benchmark.json").read_text())
     baseline = {
         "chunk_overlap": 5,
@@ -12,21 +20,29 @@ if __name__ == "__main__":
         "reranking": False,
         "embedding_model": "Alibaba-NLP/gte-modernbert-base",
     }
-    outputs = {
-        15: Path("results/chunk-15.json"),
-        30: Path("results/baseline.json"),
-        60: Path("results/chunk-60.json"),
-    }
-    for chunk_size, output in outputs.items():
-        run_evaluation(benchmark, {**baseline, "chunk_size": chunk_size}, output)
-    run_evaluation(
-        benchmark,
-        {**baseline, "chunk_size": 30, "top_k": 5},
-        Path("results/top-5.json"),
-    )
-    run_evaluation(
-        benchmark,
-        {**baseline, "chunk_size": 30, "reranking": True},
-        Path("results/reranked.json"),
-    )
-    print("Saved five controlled retrieval configurations")
+    experiments = [
+        ({**baseline, "chunk_size": 15}, Path("results/chunk-15.json")),
+        ({**baseline, "chunk_size": 30}, Path("results/baseline.json")),
+        ({**baseline, "chunk_size": 60}, Path("results/chunk-60.json")),
+        (
+            {**baseline, "chunk_size": 30, "top_k": 5},
+            Path("results/top-5.json"),
+        ),
+        (
+            {**baseline, "chunk_size": 30, "reranking": True},
+            Path("results/reranked.json"),
+        ),
+    ]
+    if arguments.allow_paid_calls:
+        print("Paid model calls enabled; each completed answer will be checkpointed.")
+    for configuration, output in experiments:
+        if arguments.allow_paid_calls:
+            configuration = {**configuration, "generate_answers": True}
+            output = output.with_name(f"answered-{output.name}")
+        run_evaluation(
+            benchmark,
+            configuration,
+            output,
+            allow_paid_calls=arguments.allow_paid_calls,
+        )
+    print("Saved five controlled evaluation configurations")

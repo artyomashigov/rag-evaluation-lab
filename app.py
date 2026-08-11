@@ -146,6 +146,44 @@ for evidence in question["retrieved_evidence"]:
     )
     st.write(evidence["text"])
 
+answered_path = Path("results/answered-baseline.json")
+answered_result = json.loads(answered_path.read_text()) if answered_path.exists() else None
+answered_question = None
+if answered_result:
+    answered_question = next(
+        (
+            item
+            for item in answered_result["questions"]
+            if item["question_id"] == question_id
+        ),
+        None,
+    )
+if answered_result and answered_question:
+    st.subheader("Saved answer")
+    st.write(answered_question["answer"])
+    st.write(
+        "Citations:",
+        ", ".join(answered_question["citations"])
+        if answered_question["citations"]
+        else "None — model abstained",
+    )
+    answer_columns = st.columns(3)
+    answer_columns[0].metric(
+        "Abstained", "Yes" if answered_question["abstained"] else "No"
+    )
+    answer_columns[1].metric(
+        "Generation latency", f"{answered_question['generation_latency_ms']:.1f} ms"
+    )
+    answer_columns[2].metric(
+        "Estimated cost", f"${answered_question['estimated_cost_usd']:.6f}"
+    )
+    st.caption(
+        f"Model {answered_question['answer_model']} · price snapshot "
+        f"{answered_result['pricing']['date']} · saved result only; no dashboard API call"
+    )
+elif answered_result:
+    st.info("This question has not been generated yet; the paid run can resume safely.")
+
 if reranked_result:
     reranked_question = next(
         item for item in reranked_result["questions"] if item["question_id"] == question_id
