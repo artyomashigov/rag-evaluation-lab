@@ -15,7 +15,8 @@ if not result_path.exists():
 
 result = json.loads(result_path.read_text())
 summary = result["benchmark_summary"]
-question = result["questions"][0]
+metrics = result["metrics"]
+questions = {question["question_id"]: question for question in result["questions"]}
 
 columns = st.columns(4)
 columns[0].metric("Documents", summary["document_count"])
@@ -23,10 +24,27 @@ columns[1].metric("Sections", summary["section_count"])
 columns[2].metric("Questions", summary["question_count"])
 columns[3].metric("Unanswerable", summary["unanswerable_count"])
 
+metric_columns = st.columns(2)
+metric_columns[0].metric("Retrieval hit rate", f"{metrics['retrieval_hit_rate']:.0%}")
+metric_columns[1].metric(
+    "Average retrieval latency", f"{metrics['average_retrieval_latency_ms']:.1f} ms"
+)
+st.caption("Recorded locally with 700-token chunks, 70-token overlap, top-3, and no reranking.")
+
+question_id = st.selectbox(
+    "Question",
+    questions,
+    format_func=lambda identifier: questions[identifier]["question"],
+)
+question = questions[question_id]
 st.subheader(question["question"])
 st.metric("Expected section retrieved", "Yes" if question["retrieval_hit"] else "No")
-st.write("Expected section:", question["expected_section"])
+st.write("Expected section:", question["expected_section"] or "No source expected")
 
 for evidence in question["retrieved_evidence"]:
-    st.markdown(f"**{evidence['section_id']}**")
+    st.markdown(f"**{evidence['document_title']} — {evidence['section_id']}**")
+    st.caption(
+        f"Similarity {evidence['similarity_score']:.3f} · "
+        f"characters {evidence['start_char']}–{evidence['end_char']}"
+    )
     st.write(evidence["text"])

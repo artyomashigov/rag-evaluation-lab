@@ -1,53 +1,71 @@
 import json
 import re
 from collections import Counter
+from functools import lru_cache
 from pathlib import Path
-from typing import Any, Mapping
+from time import perf_counter
+from typing import Any, Callable, Mapping
+
+
+Embedder = Callable[[list[str]], list[list[float]]]
 
 
 def run_evaluation(
     benchmark: Mapping[str, Any],
-    configuration: Mapping[str, int],
+    configuration: Mapping[str, Any],
     output: Path,
+    *,
+    embedder: Embedder | None = None,
 ) -> dict[str, Any]:
     """Evaluate a benchmark and save the result for the dashboard."""
     _validate_benchmark(benchmark)
     documents = benchmark["documents"]
-    sections = [
-        {
-            **section,
-            "document_id": document["document_id"],
-            "document_title": document["title"],
-        }
-        for document in documents
-        for section in document["sections"]
-    ]
     questions = benchmark["questions"]
     top_k = configuration["top_k"]
+    chunk_size = configuration.get("chunk_size", 700)
+    chunk_overlap = configuration.get("chunk_overlap", 0)
+    model_name = configuration.get(
+        "embedding_model", "sentence-transformers/all-MiniLM-L6-v2"
+    )
+    chunks = _chunk_documents(documents, chunk_size, chunk_overlap)
+    embed = embedder or (lambda texts: _local_embeddings(texts, model_name))
+    chunk_embeddings = embed([chunk["text"] for chunk in chunks])
     question_results = []
 
     for question in questions:
-        # ponytail: lexical ranking keeps ticket 01 offline; ticket 03 replaces it with embeddings.
-        evidence = sorted(
-            sections,
-            key=lambda section: _word_overlap(question["question"], section["text"]),
+        started = perf_counter()
+        query_embedding = embed([question["question"]])[0]
+        ranked = sorted(
+            zip(chunks, chunk_embeddings),
+            key=lambda item: _dot_product(query_embedding, item[1]),
             reverse=True,
         )[:top_k]
+        evidence = [
+            {
+                **chunk,
+                "similarity_score": round(_dot_product(query_embedding, vector), 6),
+            }
+            for chunk, vector in ranked
+        ]
+        latency_ms = round((perf_counter() - started) * 1000, 3)
         question_results.append(
             {
                 **question,
                 "retrieved_evidence": evidence,
                 "retrieval_hit": question["expected_section"] is not None
                 and question["expected_section"]
-                in {section["section_id"] for section in evidence},
+                in {chunk["section_id"] for chunk in evidence},
+                "retrieval_latency_ms": latency_ms,
             }
         )
 
+    answerable_results = [result for result in question_results if result["answerable"]]
     result = {
         "configuration": dict(configuration),
         "benchmark_summary": {
             "document_count": len(documents),
-            "section_count": len(sections),
+            "section_count": sum(len(document["sections"]) for document in documents),
+            "chunk_count": len(chunks),
             "question_count": len(questions),
             "answerable_count": sum(question["answerable"] for question in questions),
             "unanswerable_count": sum(
@@ -57,11 +75,74 @@ def run_evaluation(
                 sorted(Counter(question["category"] for question in questions).items())
             ),
         },
+        "metrics": {
+            "retrieval_hit_rate": round(
+                sum(item["retrieval_hit"] for item in answerable_results)
+                / len(answerable_results),
+                4,
+            ),
+            "average_retrieval_latency_ms": round(
+                sum(item["retrieval_latency_ms"] for item in question_results)
+                / len(question_results),
+                3,
+            ),
+        },
         "questions": question_results,
     }
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, indent=2) + "\n")
     return result
+
+
+def _chunk_documents(
+    documents: list[dict[str, Any]], chunk_size: int, overlap: int
+) -> list[dict[str, Any]]:
+    if chunk_size < 1 or overlap < 0 or overlap >= chunk_size:
+        raise ValueError("Chunk size must be positive and overlap must be smaller")
+
+    chunks = []
+    step = chunk_size - overlap
+    for document in documents:
+        for section in document["sections"]:
+            words = list(re.finditer(r"\S+", section["text"]))
+            for word_start in range(0, len(words), step):
+                selected = words[word_start : word_start + chunk_size]
+                if not selected:
+                    break
+                start_char = selected[0].start()
+                end_char = selected[-1].end()
+                chunks.append(
+                    {
+                        "chunk_id": f"{section['section_id']}:{start_char}-{end_char}",
+                        "document_id": document["document_id"],
+                        "document_title": document["title"],
+                        "section_id": section["section_id"],
+                        "start_char": start_char,
+                        "end_char": end_char,
+                        "text": section["text"][start_char:end_char],
+                    }
+                )
+                if word_start + chunk_size >= len(words):
+                    break
+    return chunks
+
+
+def _dot_product(left: list[float], right: list[float]) -> float:
+    return sum(a * b for a, b in zip(left, right))
+
+
+@lru_cache(maxsize=1)
+def _embedding_model(model_name: str) -> Any:
+    from sentence_transformers import SentenceTransformer
+
+    return SentenceTransformer(model_name)
+
+
+def _local_embeddings(texts: list[str], model_name: str) -> list[list[float]]:
+    embeddings = _embedding_model(model_name).encode(
+        texts, normalize_embeddings=True, show_progress_bar=False
+    )
+    return embeddings.tolist()
 
 
 def _validate_benchmark(benchmark: Mapping[str, Any]) -> None:
@@ -142,8 +223,3 @@ def _validate_benchmark(benchmark: Mapping[str, Any]) -> None:
             raise ValueError(
                 f"Unanswerable question {label} must have no expected section or answer and must abstain"
             )
-
-
-def _word_overlap(left: str, right: str) -> int:
-    words = lambda text: set(re.findall(r"[a-z0-9]+", text.lower()))
-    return len(words(left) & words(right))

@@ -7,7 +7,90 @@ from pathlib import Path
 from rag_lab import run_evaluation
 
 
+def keyword_embeddings(texts: list[str]) -> list[list[float]]:
+    vocabulary = ("carry", "payroll", "parking")
+    return [
+        [float(word in text.lower()) for word in vocabulary]
+        for text in texts
+    ]
+
+
 class EvaluationRunnerTest(unittest.TestCase):
+    def test_baseline_retrieval_returns_ranked_source_chunks_and_metrics(self) -> None:
+        benchmark = {
+            "documents": [
+                {
+                    "document_id": "pto-policy",
+                    "title": "PTO Policy (Synthetic)",
+                    "sections": [
+                        {
+                            "section_id": "pto.carryover",
+                            "text": "Employees may carry five unused days into next year.",
+                        }
+                    ],
+                },
+                {
+                    "document_id": "payroll-guide",
+                    "title": "Payroll Guide (Synthetic)",
+                    "sections": [
+                        {
+                            "section_id": "payroll.schedule",
+                            "text": "Payroll is issued every other Friday.",
+                        }
+                    ],
+                },
+            ],
+            "questions": [
+                {
+                    "question_id": "q01",
+                    "question": "How many days can I carry forward?",
+                    "category": "paraphrase",
+                    "answerable": True,
+                    "expected_section": "pto.carryover",
+                    "reference_answer": "Five days.",
+                    "expected_abstention": False,
+                    "reviewer_note": "Tests carryover wording.",
+                },
+                {
+                    "question_id": "q02",
+                    "question": "Where is employee parking?",
+                    "category": "unanswerable",
+                    "answerable": False,
+                    "expected_section": None,
+                    "reference_answer": None,
+                    "expected_abstention": True,
+                    "reviewer_note": "Parking is absent.",
+                },
+            ],
+        }
+        configuration = {
+            "chunk_size": 4,
+            "chunk_overlap": 1,
+            "top_k": 1,
+            "reranking": False,
+            "embedding_model": "deterministic-test",
+        }
+
+        with tempfile.TemporaryDirectory() as directory:
+            result = run_evaluation(
+                benchmark,
+                configuration,
+                Path(directory) / "result.json",
+                embedder=keyword_embeddings,
+            )
+
+        first_question = result["questions"][0]
+        evidence = first_question["retrieved_evidence"]
+        self.assertEqual(len(evidence), 1)
+        self.assertEqual(evidence[0]["section_id"], "pto.carryover")
+        self.assertEqual(evidence[0]["document_id"], "pto-policy")
+        self.assertEqual(evidence[0]["text"], "Employees may carry five")
+        self.assertEqual((evidence[0]["start_char"], evidence[0]["end_char"]), (0, 24))
+        self.assertTrue(first_question["retrieval_hit"])
+        self.assertGreaterEqual(first_question["retrieval_latency_ms"], 0)
+        self.assertEqual(result["metrics"]["retrieval_hit_rate"], 1.0)
+        self.assertGreaterEqual(result["metrics"]["average_retrieval_latency_ms"], 0)
+
     def test_invalid_benchmark_explains_what_is_wrong(self) -> None:
         benchmark = json.loads(Path("data/benchmark.json").read_text())
 
@@ -53,6 +136,7 @@ class EvaluationRunnerTest(unittest.TestCase):
                 benchmark,
                 {"top_k": 1},
                 Path(directory) / "result.json",
+                embedder=keyword_embeddings,
             )
 
         self.assertEqual(
@@ -60,6 +144,7 @@ class EvaluationRunnerTest(unittest.TestCase):
             {
                 "document_count": 5,
                 "section_count": 15,
+                "chunk_count": 15,
                 "question_count": 30,
                 "answerable_count": 24,
                 "unanswerable_count": 6,
@@ -100,46 +185,22 @@ class EvaluationRunnerTest(unittest.TestCase):
                 }
             ],
         }
-        expected = {
-            "configuration": {"top_k": 1},
-            "benchmark_summary": {
-                "document_count": 1,
-                "section_count": 1,
-                "question_count": 1,
-                "answerable_count": 1,
-                "unanswerable_count": 0,
-                "category_counts": {"direct": 1},
-            },
-            "questions": [
-                {
-                    "question_id": "q01",
-                    "question": "How many PTO days can employees carry over?",
-                    "category": "direct",
-                    "answerable": True,
-                    "expected_section": "pto.carryover",
-                    "reference_answer": "Five days.",
-                    "expected_abstention": False,
-                    "reviewer_note": "Direct lookup.",
-                    "retrieved_evidence": [
-                        {
-                            "section_id": "pto.carryover",
-                            "text": "Employees may carry over five PTO days.",
-                            "document_id": "pto-policy",
-                            "document_title": "Paid Time Off Policy (Synthetic)",
-                        }
-                    ],
-                    "retrieval_hit": True,
-                }
-            ],
-        }
-
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "result.json"
 
-            result = run_evaluation(benchmark, {"top_k": 1}, output)
+            result = run_evaluation(
+                benchmark,
+                {"top_k": 1},
+                output,
+                embedder=keyword_embeddings,
+            )
 
-            self.assertEqual(result, expected)
-            self.assertEqual(json.loads(output.read_text()), expected)
+            self.assertTrue(result["questions"][0]["retrieval_hit"])
+            self.assertEqual(
+                result["questions"][0]["retrieved_evidence"][0]["section_id"],
+                "pto.carryover",
+            )
+            self.assertEqual(json.loads(output.read_text()), result)
 
 
 if __name__ == "__main__":
