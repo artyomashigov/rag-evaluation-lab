@@ -50,9 +50,13 @@ def run_evaluation(
         "reranker_model": configuration.get(
             "reranker_model", "cross-encoder/ms-marco-MiniLM-L6-v2"
         ),
-        "generate_answers": configuration.get("generate_answers", False),
-        "answer_model": configuration.get("answer_model", "gpt-5.6-luna"),
     }
+    generate_answers = bool(configuration.get("generate_answers", False))
+    answer_model = str(configuration.get("answer_model", "gpt-5.6-luna"))
+    if generate_answers:
+        effective_configuration.update(
+            {"generate_answers": True, "answer_model": answer_model}
+        )
     pricing = configuration.get(
         "price_snapshot",
         {
@@ -62,7 +66,7 @@ def run_evaluation(
             "output_usd_per_million_tokens": 1.2,
         },
     )
-    if effective_configuration["generate_answers"] and not allow_paid_calls:
+    if generate_answers and not allow_paid_calls:
         raise PermissionError("Answer generation requires allow_paid_calls=True")
     if effective_configuration["top_k"] < 1:
         raise ValueError("Top-k must be positive")
@@ -90,7 +94,7 @@ def run_evaluation(
     chunk_embeddings = embed([chunk["text"] for chunk in chunks])
     question_results = []
     completed_answers: dict[str, dict[str, Any]] = {}
-    if effective_configuration["generate_answers"] and output.exists():
+    if generate_answers and output.exists():
         previous = json.loads(output.read_text())
         if (
             previous.get("configuration") == effective_configuration
@@ -170,25 +174,15 @@ def run_evaluation(
             in {chunk["section_id"] for chunk in evidence},
             "retrieval_latency_ms": retrieval_latency_ms,
             "reranking_latency_ms": reranking_latency_ms,
-            "answer": None,
-            "citations": [],
-            "abstained": None,
-            "answer_model": effective_configuration["answer_model"],
-            "input_tokens": 0,
-            "output_tokens": 0,
-            "generation_latency_ms": 0.0,
-            "estimated_cost_usd": 0.0,
         }
         previous_answer = completed_answers.get(question["question_id"])
         if previous_answer:
             question_result.update(
                 {field: previous_answer[field] for field in ANSWER_FIELDS}
             )
-        elif effective_configuration["generate_answers"]:
+        elif generate_answers:
             started = perf_counter()
-            generated = generate_answer(
-                question["question"], evidence, effective_configuration["answer_model"]
-            )
+            generated = generate_answer(question["question"], evidence, answer_model)
             generation_latency_ms = round((perf_counter() - started) * 1000, 3)
             citations = generated["citations"]
             evidence_sections = {item["section_id"] for item in evidence}
@@ -209,39 +203,40 @@ def run_evaluation(
             output_tokens = int(generated["output_tokens"])
             if input_tokens < 0 or output_tokens < 0:
                 raise ValueError("Token counts cannot be negative")
-            estimated_cost = (
-                input_tokens * pricing["input_usd_per_million_tokens"]
-                + output_tokens * pricing["output_usd_per_million_tokens"]
-            ) / 1_000_000
             question_result.update(
                 {
                     **generated,
-                    "answer_model": effective_configuration["answer_model"],
+                    "answer_model": answer_model,
                     "input_tokens": input_tokens,
                     "output_tokens": output_tokens,
                     "generation_latency_ms": generation_latency_ms,
-                    "estimated_cost_usd": round(estimated_cost, 8),
+                    "estimated_cost_usd": _estimated_cost_usd(
+                        input_tokens, output_tokens, pricing
+                    ),
                 }
             )
         question_results.append(question_result)
-        if effective_configuration["generate_answers"]:
+        if generate_answers:
+            processed_ids = {item["question_id"] for item in question_results}
             _write_json(
                 output,
                 {
                     "status": "in_progress",
                     "configuration": effective_configuration,
                     "pricing": pricing,
-                    "questions": question_results,
+                    "questions": question_results
+                    + [
+                        completed_answers[pending["question_id"]]
+                        for pending in questions
+                        if pending["question_id"] in completed_answers
+                        and pending["question_id"] not in processed_ids
+                    ],
                 },
             )
 
     answerable_results = [result for result in question_results if result["answerable"]]
-    total_input_tokens = sum(item["input_tokens"] for item in question_results)
-    total_output_tokens = sum(item["output_tokens"] for item in question_results)
-    result = {
-        "status": "complete",
+    result: dict[str, Any] = {
         "configuration": effective_configuration,
-        "pricing": pricing,
         "benchmark_summary": {
             "document_count": len(documents),
             "section_count": sum(len(document["sections"]) for document in documents),
@@ -271,24 +266,27 @@ def run_evaluation(
                 / len(question_results),
                 3,
             ),
-            "average_generation_latency_ms": round(
-                sum(item["generation_latency_ms"] for item in question_results)
-                / len(question_results),
-                3,
-            ),
-            "input_tokens": total_input_tokens,
-            "output_tokens": total_output_tokens,
-            "estimated_cost_usd": round(
-                (
-                    total_input_tokens * pricing["input_usd_per_million_tokens"]
-                    + total_output_tokens * pricing["output_usd_per_million_tokens"]
-                )
-                / 1_000_000,
-                8,
-            ),
         },
         "questions": question_results,
     }
+    if generate_answers:
+        total_input_tokens = sum(item["input_tokens"] for item in question_results)
+        total_output_tokens = sum(item["output_tokens"] for item in question_results)
+        result.update({"status": "complete", "pricing": pricing})
+        result["metrics"].update(
+            {
+                "average_generation_latency_ms": round(
+                    sum(item["generation_latency_ms"] for item in question_results)
+                    / len(question_results),
+                    3,
+                ),
+                "input_tokens": total_input_tokens,
+                "output_tokens": total_output_tokens,
+                "estimated_cost_usd": _estimated_cost_usd(
+                    total_input_tokens, total_output_tokens, pricing
+                ),
+            }
+        )
     _write_json(output, result)
     return result
 
@@ -331,6 +329,19 @@ def _chunk_documents(
 
 def _dot_product(left: list[float], right: list[float]) -> float:
     return sum(a * b for a, b in zip(left, right))
+
+
+def _estimated_cost_usd(
+    input_tokens: int, output_tokens: int, pricing: Mapping[str, Any]
+) -> float:
+    return round(
+        (
+            input_tokens * pricing["input_usd_per_million_tokens"]
+            + output_tokens * pricing["output_usd_per_million_tokens"]
+        )
+        / 1_000_000,
+        8,
+    )
 
 
 def _write_json(output: Path, value: Mapping[str, Any]) -> None:

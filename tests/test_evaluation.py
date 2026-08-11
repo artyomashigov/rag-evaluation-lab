@@ -55,11 +55,11 @@ class EvaluationRunnerTest(unittest.TestCase):
         }
         first_run_calls: list[str] = []
 
-        def fail_second_question(
+        def fail_third_question(
             question: str, evidence: list[dict[str, object]], _model: str
         ) -> dict[str, object]:
             first_run_calls.append(question)
-            if len(first_run_calls) == 2:
+            if len(first_run_calls) == 3:
                 raise RuntimeError("provider failed")
             return {
                 "answer": "Up to five unused PTO days [pto.carryover].",
@@ -78,13 +78,13 @@ class EvaluationRunnerTest(unittest.TestCase):
                     output,
                     embedder=keyword_embeddings,
                     tokenizer=token_offsets,
-                    answer_generator=fail_second_question,
+                    answer_generator=fail_third_question,
                     allow_paid_calls=True,
                 )
 
             checkpoint = json.loads(output.read_text())
             self.assertEqual(checkpoint["status"], "in_progress")
-            self.assertEqual(len(checkpoint["questions"]), 1)
+            self.assertEqual(len(checkpoint["questions"]), 2)
             checkpointed_question = checkpoint["questions"][0]
             self.assertEqual(checkpointed_question["citations"], ["pto.carryover"])
             self.assertFalse(checkpointed_question["abstained"])
@@ -94,6 +94,29 @@ class EvaluationRunnerTest(unittest.TestCase):
                 checkpointed_question["answer_model"], "deterministic-answer-model"
             )
             self.assertEqual(checkpoint["pricing"], configuration["price_snapshot"])
+
+            embedding_calls = 0
+
+            def fail_while_rebuilding(
+                texts: list[str],
+            ) -> list[list[float]]:
+                nonlocal embedding_calls
+                embedding_calls += 1
+                if embedding_calls == 3:
+                    raise RuntimeError("retrieval failed")
+                return keyword_embeddings(texts)
+
+            with self.assertRaisesRegex(RuntimeError, "retrieval failed"):
+                run_evaluation(
+                    benchmark,
+                    configuration,
+                    output,
+                    embedder=fail_while_rebuilding,
+                    tokenizer=token_offsets,
+                    answer_generator=lambda *_: self.fail("paid answer was regenerated"),
+                    allow_paid_calls=True,
+                )
+            self.assertEqual(len(json.loads(output.read_text())["questions"]), 2)
 
             resume_calls: list[str] = []
 
@@ -119,8 +142,14 @@ class EvaluationRunnerTest(unittest.TestCase):
                 allow_paid_calls=True,
             )
 
-        self.assertNotIn(benchmark["questions"][0]["question"], resume_calls)
-        self.assertEqual(len(resume_calls), 29)
+        self.assertFalse(
+            {
+                benchmark["questions"][0]["question"],
+                benchmark["questions"][1]["question"],
+            }
+            & set(resume_calls)
+        )
+        self.assertEqual(len(resume_calls), 28)
         self.assertEqual(result["status"], "complete")
         self.assertEqual(result["questions"][0]["estimated_cost_usd"], 0.000008)
         self.assertGreaterEqual(result["questions"][0]["generation_latency_ms"], 0)
@@ -379,10 +408,11 @@ class EvaluationRunnerTest(unittest.TestCase):
                     "candidate_pool_size": 10,
                     "embedding_model": "Alibaba-NLP/gte-modernbert-base",
                     "reranker_model": "cross-encoder/ms-marco-MiniLM-L6-v2",
-                    "generate_answers": False,
-                    "answer_model": "gpt-5.6-luna",
                 },
             )
+            self.assertNotIn("pricing", result)
+            self.assertNotIn("answer", result["questions"][0])
+            self.assertNotIn("estimated_cost_usd", result["metrics"])
             self.assertTrue(result["questions"][0]["retrieval_hit"])
             self.assertEqual(
                 result["questions"][0]["retrieved_evidence"][0]["section_id"],

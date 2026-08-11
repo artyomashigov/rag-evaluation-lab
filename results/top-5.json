@@ -1,5 +1,4 @@
 {
-  "status": "complete",
   "configuration": {
     "chunk_size": 30,
     "chunk_overlap": 5,
@@ -7,15 +6,7 @@
     "reranking": false,
     "candidate_pool_size": 10,
     "embedding_model": "Alibaba-NLP/gte-modernbert-base",
-    "reranker_model": "cross-encoder/ms-marco-MiniLM-L6-v2",
-    "generate_answers": false,
-    "answer_model": "gpt-5.6-luna"
-  },
-  "pricing": {
-    "date": "2026-08-11",
-    "currency": "USD",
-    "input_usd_per_million_tokens": 0.2,
-    "output_usd_per_million_tokens": 1.2
+    "reranker_model": "cross-encoder/ms-marco-MiniLM-L6-v2"
   },
   "benchmark_summary": {
     "document_count": 5,
@@ -33,12 +24,8 @@
   },
   "metrics": {
     "retrieval_hit_rate": 1.0,
-    "average_retrieval_latency_ms": 17.755,
-    "average_reranking_latency_ms": 0.0,
-    "average_generation_latency_ms": 0.0,
-    "input_tokens": 0,
-    "output_tokens": 0,
-    "estimated_cost_usd": 0.0
+    "average_retrieval_latency_ms": 17.136,
+    "average_reranking_latency_ms": 0.0
   },
   "questions": [
     {
@@ -118,16 +105,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 20.038,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 19.243,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q02",
@@ -206,16 +185,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 20.69,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 20.921,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q03",
@@ -294,16 +265,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.607,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 15.757,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q04",
@@ -382,16 +345,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 17.522,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 17.273,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q05",
@@ -470,16 +425,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 13.681,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 13.736,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q06",
@@ -558,16 +505,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 15.534,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 17.828,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q07",
@@ -646,16 +585,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.694,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 17.298,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q08",
@@ -734,16 +665,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 15.96,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 17.968,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q09",
@@ -822,16 +745,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 17.224,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 15.537,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q10",
@@ -910,16 +825,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 17.088,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 17.56,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q11",
@@ -998,16 +905,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 13.056,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 12.173,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q12",
@@ -1086,16 +985,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 12.203,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 13.814,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q13",
@@ -1174,16 +1065,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 17.834,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 17.421,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q14",
@@ -1262,16 +1145,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.023,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 18.054,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q15",
@@ -1350,16 +1225,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 19.329,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 17.701,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q16",
@@ -1438,16 +1305,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.914,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 17.526,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q17",
@@ -1526,16 +1385,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.092,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 15.546,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q18",
@@ -1614,16 +1465,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 20.583,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 22.213,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q19",
@@ -1702,16 +1545,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 20.816,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 20.144,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q20",
@@ -1790,16 +1625,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 25.194,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 20.0,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q21",
@@ -1878,16 +1705,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 19.065,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 18.611,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q22",
@@ -1966,16 +1785,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 25.625,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 19.129,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q23",
@@ -2054,16 +1865,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 17.828,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 16.931,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q24",
@@ -2142,16 +1945,8 @@
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 19.354,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 16.419,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q25",
@@ -2230,16 +2025,8 @@
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 15.86,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 14.689,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q26",
@@ -2318,16 +2105,8 @@
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 20.267,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 16.571,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q27",
@@ -2406,16 +2185,8 @@
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 14.971,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 13.374,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q28",
@@ -2494,16 +2265,8 @@
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 18.993,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 19.049,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q29",
@@ -2582,16 +2345,8 @@
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 16.963,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 17.071,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q30",
@@ -2670,16 +2425,8 @@
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 14.651,
-      "reranking_latency_ms": 0.0,
-      "answer": null,
-      "citations": [],
-      "abstained": null,
-      "answer_model": "gpt-5.6-luna",
-      "input_tokens": 0,
-      "output_tokens": 0,
-      "generation_latency_ms": 0.0,
-      "estimated_cost_usd": 0.0
+      "retrieval_latency_ms": 14.536,
+      "reranking_latency_ms": 0.0
     }
   ]
 }
