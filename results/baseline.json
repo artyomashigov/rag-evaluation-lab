@@ -1,0 +1,18 @@
+{
+  "configuration": {
+    "top_k": 1
+  },
+  "questions": [
+    {
+      "question": "How many PTO days can employees carry over?",
+      "expected_section": "pto.carryover",
+      "retrieved_evidence": [
+        {
+          "section_id": "pto.carryover",
+          "text": "Employees may carry over five PTO days."
+        }
+      ],
+      "retrieval_hit": true
+    }
+  ]
+}
