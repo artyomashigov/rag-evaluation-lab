@@ -20,6 +20,10 @@ def token_offsets(text: str) -> list[tuple[int, int]]:
     return [(match.start(), match.end()) for match in re.finditer(r"\w+|[^\w\s]", text)]
 
 
+def prefer_payroll(_query: str, texts: list[str]) -> list[float]:
+    return [float("payroll" in text.lower()) for text in texts]
+
+
 class EvaluationRunnerTest(unittest.TestCase):
     def test_baseline_retrieval_returns_ranked_source_chunks_and_metrics(self) -> None:
         benchmark = {
@@ -96,6 +100,30 @@ class EvaluationRunnerTest(unittest.TestCase):
         self.assertGreaterEqual(first_question["retrieval_latency_ms"], 0)
         self.assertEqual(result["metrics"]["retrieval_hit_rate"], 1.0)
         self.assertGreaterEqual(result["metrics"]["average_retrieval_latency_ms"], 0)
+
+        with tempfile.TemporaryDirectory() as directory:
+            reranked = run_evaluation(
+                benchmark,
+                {
+                    **configuration,
+                    "reranking": True,
+                    "candidate_pool_size": 6,
+                    "reranker_model": "deterministic-test",
+                },
+                Path(directory) / "reranked.json",
+                embedder=keyword_embeddings,
+                tokenizer=token_offsets,
+                reranker=prefer_payroll,
+            )
+
+        reranked_question = reranked["questions"][0]
+        reranked_evidence = reranked_question["retrieved_evidence"]
+        self.assertEqual(len(reranked_evidence), 3)
+        self.assertEqual(reranked_evidence[0]["section_id"], "payroll.schedule")
+        self.assertGreater(reranked_evidence[0]["original_rank"], 1)
+        self.assertEqual(reranked_evidence[0]["reranked_position"], 1)
+        self.assertGreaterEqual(reranked_question["reranking_latency_ms"], 0)
+        self.assertGreaterEqual(reranked["metrics"]["average_reranking_latency_ms"], 0)
 
         with tempfile.TemporaryDirectory() as directory:
             top_five = run_evaluation(
@@ -245,7 +273,9 @@ class EvaluationRunnerTest(unittest.TestCase):
                     "chunk_overlap": 5,
                     "top_k": 1,
                     "reranking": False,
+                    "candidate_pool_size": 10,
                     "embedding_model": "Alibaba-NLP/gte-modernbert-base",
+                    "reranker_model": "cross-encoder/ms-marco-MiniLM-L6-v2",
                 },
             )
             self.assertTrue(result["questions"][0]["retrieval_hit"])

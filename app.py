@@ -94,6 +94,31 @@ if top_five_path.exists():
         "improve coverage, but it also gives the answer stage more text to process."
     )
 
+reranked_path = Path("results/reranked.json")
+reranked_result = json.loads(reranked_path.read_text()) if reranked_path.exists() else None
+if reranked_result:
+    reranking_results = [result, reranked_result]
+    st.subheader("Reranking comparison")
+    st.dataframe(
+        [
+            {
+                "Reranking": "On" if item["configuration"]["reranking"] else "Off",
+                "Hit rate": item["metrics"]["retrieval_hit_rate"],
+                "Retrieval (ms)": item["metrics"]["average_retrieval_latency_ms"],
+                "Reranking (ms)": item["metrics"]["average_reranking_latency_ms"],
+            }
+            for item in reranking_results
+        ],
+        hide_index=True,
+    )
+    st.caption(
+        f"Reranking changed hit rate from "
+        f"{result['metrics']['retrieval_hit_rate']:.0%} to "
+        f"{reranked_result['metrics']['retrieval_hit_rate']:.0%} and added "
+        f"{reranked_result['metrics']['average_reranking_latency_ms']:.1f} ms. "
+        "That trade-off is specific to this small benchmark."
+    )
+
 question_id = st.selectbox(
     "Question",
     questions,
@@ -111,3 +136,21 @@ for evidence in question["retrieved_evidence"]:
         f"characters {evidence['start_char']}–{evidence['end_char']}"
     )
     st.write(evidence["text"])
+
+if reranked_result:
+    reranked_question = next(
+        item for item in reranked_result["questions"] if item["question_id"] == question_id
+    )
+    st.subheader("Reranked order")
+    st.dataframe(
+        [
+            {
+                "Final rank": evidence["reranked_position"],
+                "Original rank": evidence["original_rank"],
+                "Section": evidence["section_id"],
+                "Score": evidence["reranker_score"],
+            }
+            for evidence in reranked_question["retrieved_evidence"]
+        ],
+        hide_index=True,
+    )

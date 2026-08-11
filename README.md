@@ -12,7 +12,7 @@ python run_demo.py
 streamlit run app.py
 ```
 
-The first benchmark run downloads the embedding model. Later retrieval runs are local; the Streamlit app only reads the saved experiment results.
+The first benchmark run downloads the embedding and reranking models. Later runs are local; the Streamlit app only reads the saved experiment results.
 
 ## Check
 

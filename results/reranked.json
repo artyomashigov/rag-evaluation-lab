@@ -1,9 +1,9 @@
 {
   "configuration": {
-    "chunk_size": 60,
+    "chunk_size": 30,
     "chunk_overlap": 5,
     "top_k": 3,
-    "reranking": false,
+    "reranking": true,
     "candidate_pool_size": 10,
     "embedding_model": "Alibaba-NLP/gte-modernbert-base",
     "reranker_model": "cross-encoder/ms-marco-MiniLM-L6-v2"
@@ -11,7 +11,7 @@
   "benchmark_summary": {
     "document_count": 5,
     "section_count": 15,
-    "chunk_count": 15,
+    "chunk_count": 21,
     "question_count": 30,
     "answerable_count": 24,
     "unanswerable_count": 6,
@@ -23,9 +23,9 @@
     }
   },
   "metrics": {
-    "retrieval_hit_rate": 0.9583,
-    "average_retrieval_latency_ms": 16.887,
-    "average_reranking_latency_ms": 0.0
+    "retrieval_hit_rate": 1.0,
+    "average_retrieval_latency_ms": 17.6,
+    "average_reranking_latency_ms": 20.154
   },
   "questions": [
     {
@@ -48,8 +48,8 @@
           "text": "Employees may carry over up to five unused PTO days into the next calendar year. Additional unused days expire on December 31.",
           "similarity_score": 0.908062,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 10.155172
         },
         {
           "chunk_id": "pto.notice:0-147",
@@ -61,26 +61,26 @@
           "text": "Planned PTO requests require at least two business days of notice and manager approval. Unexpected illness should be reported as soon as practical.",
           "similarity_score": 0.681282,
           "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 2,
+          "reranker_score": -1.084207
         },
         {
-          "chunk_id": "pto.accrual:0-136",
-          "document_id": "pto-policy",
-          "document_title": "CedarWorks Paid Time Off Policy (Synthetic)",
-          "section_id": "pto.accrual",
+          "chunk_id": "benefits.enrollment:0-172",
+          "document_id": "benefits-guide",
+          "document_title": "CedarWorks Benefits Guide (Synthetic)",
+          "section_id": "benefits.enrollment",
           "start_char": 0,
-          "end_char": 136,
-          "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportionally.",
-          "similarity_score": 0.671174,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 172,
+          "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life",
+          "similarity_score": 0.649274,
+          "original_rank": 5,
+          "reranked_position": 3,
+          "reranker_score": -2.135491
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 20.752,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 20.277,
+      "reranking_latency_ms": 144.377
     },
     {
       "question_id": "q02",
@@ -93,17 +93,17 @@
       "reviewer_note": "Direct lookup of the monthly accrual rate.",
       "retrieved_evidence": [
         {
-          "chunk_id": "pto.accrual:0-136",
+          "chunk_id": "pto.accrual:0-131",
           "document_id": "pto-policy",
           "document_title": "CedarWorks Paid Time Off Policy (Synthetic)",
           "section_id": "pto.accrual",
           "start_char": 0,
-          "end_char": 136,
-          "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportionally.",
-          "similarity_score": 0.796072,
+          "end_char": 131,
+          "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportion",
+          "similarity_score": 0.804454,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 6.237019
         },
         {
           "chunk_id": "pto.carryover:0-126",
@@ -114,27 +114,27 @@
           "end_char": 126,
           "text": "Employees may carry over up to five unused PTO days into the next calendar year. Additional unused days expire on December 31.",
           "similarity_score": 0.682464,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "original_rank": 3,
+          "reranked_position": 2,
+          "reranker_score": -1.615122
         },
         {
-          "chunk_id": "pto.notice:0-147",
+          "chunk_id": "pto.accrual:98-136",
           "document_id": "pto-policy",
           "document_title": "CedarWorks Paid Time Off Policy (Synthetic)",
-          "section_id": "pto.notice",
-          "start_char": 0,
-          "end_char": 147,
-          "text": "Planned PTO requests require at least two business days of notice and manager approval. Unexpected illness should be reported as soon as practical.",
-          "similarity_score": 0.649037,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "section_id": "pto.accrual",
+          "start_char": 98,
+          "end_char": 136,
+          "text": " employees accrue time proportionally.",
+          "similarity_score": 0.741914,
+          "original_rank": 2,
+          "reranked_position": 3,
+          "reranker_score": -4.1346
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 20.102,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 19.654,
+      "reranking_latency_ms": 16.523
     },
     {
       "question_id": "q03",
@@ -156,8 +156,8 @@
           "text": "Planned PTO requests require at least two business days of notice and manager approval. Unexpected illness should be reported as soon as practical.",
           "similarity_score": 0.846895,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 8.458467
         },
         {
           "chunk_id": "pto.carryover:0-126",
@@ -169,26 +169,26 @@
           "text": "Employees may carry over up to five unused PTO days into the next calendar year. Additional unused days expire on December 31.",
           "similarity_score": 0.720953,
           "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 2,
+          "reranker_score": -2.084592
         },
         {
-          "chunk_id": "remote.eligibility:0-174",
-          "document_id": "remote-work-policy",
-          "document_title": "CedarWorks Remote Work Policy (Synthetic)",
-          "section_id": "remote.eligibility",
+          "chunk_id": "expense.travel:0-146",
+          "document_id": "expense-policy",
+          "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
+          "section_id": "expense.travel",
           "start_char": 0,
-          "end_char": 174,
-          "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
-          "similarity_score": 0.628777,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 146,
+          "text": "Air and rail travel should be booked at least 14 days in advance. Bookings made later require manager approval and a short business justification.",
+          "similarity_score": 0.599786,
+          "original_rank": 7,
+          "reranked_position": 3,
+          "reranker_score": -7.592072
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 15.181,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 15.808,
+      "reranking_latency_ms": 16.982
     },
     {
       "question_id": "q04",
@@ -210,8 +210,8 @@
           "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
           "similarity_score": 0.900561,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 10.05404
         },
         {
           "chunk_id": "remote.location:0-171",
@@ -222,27 +222,27 @@
           "end_char": 171,
           "text": "Remote work must take place from the employee's approved home state. Working temporarily from another state requires written approval from People Operations before travel.",
           "similarity_score": 0.729647,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "original_rank": 3,
+          "reranked_position": 2,
+          "reranker_score": 3.270208
         },
         {
-          "chunk_id": "remote.equipment:0-182",
+          "chunk_id": "remote.equipment:0-115",
           "document_id": "remote-work-policy",
           "document_title": "CedarWorks Remote Work Policy (Synthetic)",
           "section_id": "remote.equipment",
           "start_char": 0,
-          "end_char": 182,
-          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.72423,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 115,
+          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
+          "similarity_score": 0.738373,
+          "original_rank": 2,
+          "reranked_position": 3,
+          "reranker_score": -0.160198
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 15.824,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 17.608,
+      "reranking_latency_ms": 15.348
     },
     {
       "question_id": "q05",
@@ -264,8 +264,8 @@
           "text": "Remote work must take place from the employee's approved home state. Working temporarily from another state requires written approval from People Operations before travel.",
           "similarity_score": 0.790954,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 6.854802
         },
         {
           "chunk_id": "remote.eligibility:0-174",
@@ -277,26 +277,26 @@
           "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
           "similarity_score": 0.773529,
           "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 2,
+          "reranker_score": 3.072896
         },
         {
-          "chunk_id": "remote.equipment:0-182",
+          "chunk_id": "remote.equipment:0-115",
           "document_id": "remote-work-policy",
           "document_title": "CedarWorks Remote Work Policy (Synthetic)",
           "section_id": "remote.equipment",
           "start_char": 0,
-          "end_char": 182,
-          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.709909,
+          "end_char": 115,
+          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
+          "similarity_score": 0.728016,
           "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 3,
+          "reranker_score": 0.513332
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 14.084,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 14.568,
+      "reranking_latency_ms": 14.571
     },
     {
       "question_id": "q06",
@@ -309,30 +309,17 @@
       "reviewer_note": "Direct lookup of the equipment allowance.",
       "retrieved_evidence": [
         {
-          "chunk_id": "remote.equipment:0-182",
+          "chunk_id": "remote.equipment:0-115",
           "document_id": "remote-work-policy",
           "document_title": "CedarWorks Remote Work Policy (Synthetic)",
           "section_id": "remote.equipment",
           "start_char": 0,
-          "end_char": 182,
-          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.812316,
+          "end_char": 115,
+          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
+          "similarity_score": 0.814398,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
-        },
-        {
-          "chunk_id": "expense.meals:0-159",
-          "document_id": "expense-policy",
-          "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
-          "section_id": "expense.meals",
-          "start_char": 0,
-          "end_char": 159,
-          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on the receipt.",
-          "similarity_score": 0.60184,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 6.236515
         },
         {
           "chunk_id": "expense.receipts:0-154",
@@ -343,14 +330,27 @@
           "end_char": 154,
           "text": "Receipts are required for individual expenses of $25 or more. Approved reimbursements are processed within 10 business days and are separate from payroll.",
           "similarity_score": 0.577115,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "original_rank": 4,
+          "reranked_position": 2,
+          "reranker_score": -8.979555
+        },
+        {
+          "chunk_id": "expense.meals:0-146",
+          "document_id": "expense-policy",
+          "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
+          "section_id": "expense.meals",
+          "start_char": 0,
+          "end_char": 146,
+          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on",
+          "similarity_score": 0.61952,
+          "original_rank": 2,
+          "reranked_position": 3,
+          "reranker_score": -9.500692
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 14.884,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 15.744,
+      "reranking_latency_ms": 17.902
     },
     {
       "question_id": "q07",
@@ -372,39 +372,39 @@
           "text": "Receipts are required for individual expenses of $25 or more. Approved reimbursements are processed within 10 business days and are separate from payroll.",
           "similarity_score": 0.761145,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 8.231701
         },
         {
-          "chunk_id": "expense.meals:0-159",
-          "document_id": "expense-policy",
-          "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
-          "section_id": "expense.meals",
-          "start_char": 0,
-          "end_char": 159,
-          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on the receipt.",
-          "similarity_score": 0.635827,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
-        },
-        {
-          "chunk_id": "remote.equipment:0-182",
+          "chunk_id": "remote.equipment:0-115",
           "document_id": "remote-work-policy",
           "document_title": "CedarWorks Remote Work Policy (Synthetic)",
           "section_id": "remote.equipment",
           "start_char": 0,
-          "end_char": 182,
-          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.588323,
+          "end_char": 115,
+          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
+          "similarity_score": 0.592543,
+          "original_rank": 6,
+          "reranked_position": 2,
+          "reranker_score": -8.269753
+        },
+        {
+          "chunk_id": "expense.meals:0-146",
+          "document_id": "expense-policy",
+          "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
+          "section_id": "expense.meals",
+          "start_char": 0,
+          "end_char": 146,
+          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on",
+          "similarity_score": 0.635734,
           "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 3,
+          "reranker_score": -8.786777
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 17.796,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 19.041,
+      "reranking_latency_ms": 19.661
     },
     {
       "question_id": "q08",
@@ -417,17 +417,30 @@
       "reviewer_note": "Direct lookup of the meal limit.",
       "retrieved_evidence": [
         {
-          "chunk_id": "expense.meals:0-159",
+          "chunk_id": "expense.meals:0-146",
           "document_id": "expense-policy",
           "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
           "section_id": "expense.meals",
           "start_char": 0,
-          "end_char": 159,
-          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on the receipt.",
-          "similarity_score": 0.866034,
+          "end_char": 146,
+          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on",
+          "similarity_score": 0.869757,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 8.163308
+        },
+        {
+          "chunk_id": "payroll.corrections:123-165",
+          "document_id": "payroll-guide",
+          "document_title": "CedarWorks Payroll Guide (Synthetic)",
+          "section_id": "payroll.corrections",
+          "start_char": 123,
+          "end_char": 165,
+          "text": " are corrected within three business days.",
+          "similarity_score": 0.612605,
+          "original_rank": 4,
+          "reranked_position": 2,
+          "reranker_score": -8.893826
         },
         {
           "chunk_id": "expense.travel:0-146",
@@ -439,26 +452,13 @@
           "text": "Air and rail travel should be booked at least 14 days in advance. Bookings made later require manager approval and a short business justification.",
           "similarity_score": 0.644682,
           "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
-        },
-        {
-          "chunk_id": "expense.receipts:0-154",
-          "document_id": "expense-policy",
-          "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
-          "section_id": "expense.receipts",
-          "start_char": 0,
-          "end_char": 154,
-          "text": "Receipts are required for individual expenses of $25 or more. Approved reimbursements are processed within 10 business days and are separate from payroll.",
-          "similarity_score": 0.632963,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 3,
+          "reranker_score": -9.256256
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 15.847,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 18.329,
+      "reranking_latency_ms": 15.72
     },
     {
       "question_id": "q09",
@@ -480,39 +480,39 @@
           "text": "Air and rail travel should be booked at least 14 days in advance. Bookings made later require manager approval and a short business justification.",
           "similarity_score": 0.877551,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 10.389758
         },
         {
-          "chunk_id": "expense.meals:0-159",
-          "document_id": "expense-policy",
-          "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
-          "section_id": "expense.meals",
-          "start_char": 0,
-          "end_char": 159,
-          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on the receipt.",
-          "similarity_score": 0.587316,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
-        },
-        {
-          "chunk_id": "benefits.enrollment:0-179",
-          "document_id": "benefits-guide",
-          "document_title": "CedarWorks Benefits Guide (Synthetic)",
-          "section_id": "benefits.enrollment",
-          "start_char": 0,
-          "end_char": 179,
-          "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life event.",
-          "similarity_score": 0.565359,
+          "chunk_id": "payroll.corrections:123-165",
+          "document_id": "payroll-guide",
+          "document_title": "CedarWorks Payroll Guide (Synthetic)",
+          "section_id": "payroll.corrections",
+          "start_char": 123,
+          "end_char": 165,
+          "text": " are corrected within three business days.",
+          "similarity_score": 0.593158,
           "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 2,
+          "reranker_score": -6.917281
+        },
+        {
+          "chunk_id": "pto.notice:0-147",
+          "document_id": "pto-policy",
+          "document_title": "CedarWorks Paid Time Off Policy (Synthetic)",
+          "section_id": "pto.notice",
+          "start_char": 0,
+          "end_char": 147,
+          "text": "Planned PTO requests require at least two business days of notice and manager approval. Unexpected illness should be reported as soon as practical.",
+          "similarity_score": 0.561302,
+          "original_rank": 6,
+          "reranked_position": 3,
+          "reranker_score": -8.656523
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.197,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 15.831,
+      "reranking_latency_ms": 15.304
     },
     {
       "question_id": "q10",
@@ -525,17 +525,17 @@
       "reviewer_note": "Direct lookup of the new-hire enrollment window.",
       "retrieved_evidence": [
         {
-          "chunk_id": "benefits.enrollment:0-179",
+          "chunk_id": "benefits.enrollment:0-172",
           "document_id": "benefits-guide",
           "document_title": "CedarWorks Benefits Guide (Synthetic)",
           "section_id": "benefits.enrollment",
           "start_char": 0,
-          "end_char": 179,
-          "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life event.",
-          "similarity_score": 0.864892,
+          "end_char": 172,
+          "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life",
+          "similarity_score": 0.870471,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 9.889045
         },
         {
           "chunk_id": "remote.eligibility:0-174",
@@ -546,27 +546,27 @@
           "end_char": 174,
           "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
           "similarity_score": 0.684174,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "original_rank": 3,
+          "reranked_position": 2,
+          "reranker_score": -3.373188
         },
         {
-          "chunk_id": "benefits.health:0-136",
-          "document_id": "benefits-guide",
-          "document_title": "CedarWorks Benefits Guide (Synthetic)",
-          "section_id": "benefits.health",
+          "chunk_id": "pto.accrual:0-131",
+          "document_id": "pto-policy",
+          "document_title": "CedarWorks Paid Time Off Policy (Synthetic)",
+          "section_id": "pto.accrual",
           "start_char": 0,
-          "end_char": 136,
-          "text": "Health coverage begins on the first day of the month after enrollment is completed. Coverage includes medical, dental, and vision plans.",
-          "similarity_score": 0.680854,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 131,
+          "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportion",
+          "similarity_score": 0.636808,
+          "original_rank": 8,
+          "reranked_position": 3,
+          "reranker_score": -4.292889
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.573,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 17.329,
+      "reranking_latency_ms": 17.063
     },
     {
       "question_id": "q11",
@@ -588,39 +588,39 @@
           "text": "Health coverage begins on the first day of the month after enrollment is completed. Coverage includes medical, dental, and vision plans.",
           "similarity_score": 0.862039,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 9.333834
         },
         {
-          "chunk_id": "benefits.enrollment:0-179",
+          "chunk_id": "benefits.enrollment:0-172",
           "document_id": "benefits-guide",
           "document_title": "CedarWorks Benefits Guide (Synthetic)",
           "section_id": "benefits.enrollment",
           "start_char": 0,
-          "end_char": 179,
-          "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life event.",
-          "similarity_score": 0.700083,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 172,
+          "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life",
+          "similarity_score": 0.712044,
+          "original_rank": 3,
+          "reranked_position": 2,
+          "reranker_score": -8.514391
         },
         {
-          "chunk_id": "pto.notice:0-147",
-          "document_id": "pto-policy",
-          "document_title": "CedarWorks Paid Time Off Policy (Synthetic)",
-          "section_id": "pto.notice",
-          "start_char": 0,
-          "end_char": 147,
-          "text": "Planned PTO requests require at least two business days of notice and manager approval. Unexpected illness should be reported as soon as practical.",
-          "similarity_score": 0.560933,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "chunk_id": "payroll.corrections:123-165",
+          "document_id": "payroll-guide",
+          "document_title": "CedarWorks Payroll Guide (Synthetic)",
+          "section_id": "payroll.corrections",
+          "start_char": 123,
+          "end_char": 165,
+          "text": " are corrected within three business days.",
+          "similarity_score": 0.594683,
+          "original_rank": 6,
+          "reranked_position": 3,
+          "reranker_score": -10.156879
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 13.095,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 12.616,
+      "reranking_latency_ms": 13.129
     },
     {
       "question_id": "q12",
@@ -642,39 +642,39 @@
           "text": "Employees are paid every other Friday. If Friday is a bank holiday, direct deposits are issued on the preceding business day.",
           "similarity_score": 0.730456,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 4.614809
         },
         {
-          "chunk_id": "pto.accrual:0-136",
+          "chunk_id": "pto.accrual:0-131",
           "document_id": "pto-policy",
           "document_title": "CedarWorks Paid Time Off Policy (Synthetic)",
           "section_id": "pto.accrual",
           "start_char": 0,
-          "end_char": 136,
-          "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportionally.",
-          "similarity_score": 0.669898,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 131,
+          "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportion",
+          "similarity_score": 0.674146,
+          "original_rank": 3,
+          "reranked_position": 2,
+          "reranker_score": 4.276192
         },
         {
-          "chunk_id": "remote.equipment:0-182",
-          "document_id": "remote-work-policy",
-          "document_title": "CedarWorks Remote Work Policy (Synthetic)",
-          "section_id": "remote.equipment",
+          "chunk_id": "payroll.corrections:0-159",
+          "document_id": "payroll-guide",
+          "document_title": "CedarWorks Payroll Guide (Synthetic)",
+          "section_id": "payroll.corrections",
           "start_char": 0,
-          "end_char": 182,
-          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.65669,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 159,
+          "text": "Employees should report a suspected pay error to Payroll within five business days of the pay date. Confirmed underpayments are corrected within three business",
+          "similarity_score": 0.653163,
+          "original_rank": 5,
+          "reranked_position": 3,
+          "reranker_score": -0.913758
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 12.491,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 13.872,
+      "reranking_latency_ms": 14.641
     },
     {
       "question_id": "q13",
@@ -696,39 +696,39 @@
           "text": "Employees may carry over up to five unused PTO days into the next calendar year. Additional unused days expire on December 31.",
           "similarity_score": 0.678259,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": -9.159145
         },
         {
-          "chunk_id": "pto.accrual:0-136",
+          "chunk_id": "pto.accrual:0-131",
           "document_id": "pto-policy",
           "document_title": "CedarWorks Paid Time Off Policy (Synthetic)",
           "section_id": "pto.accrual",
           "start_char": 0,
-          "end_char": 136,
-          "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportionally.",
-          "similarity_score": 0.642405,
+          "end_char": 131,
+          "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportion",
+          "similarity_score": 0.648943,
           "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 2,
+          "reranker_score": -9.768564
         },
         {
-          "chunk_id": "remote.eligibility:0-174",
-          "document_id": "remote-work-policy",
-          "document_title": "CedarWorks Remote Work Policy (Synthetic)",
-          "section_id": "remote.eligibility",
+          "chunk_id": "benefits.enrollment:0-172",
+          "document_id": "benefits-guide",
+          "document_title": "CedarWorks Benefits Guide (Synthetic)",
+          "section_id": "benefits.enrollment",
           "start_char": 0,
-          "end_char": 174,
-          "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
-          "similarity_score": 0.555836,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 172,
+          "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life",
+          "similarity_score": 0.564887,
+          "original_rank": 8,
+          "reranked_position": 3,
+          "reranker_score": -10.251161
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.894,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 17.814,
+      "reranking_latency_ms": 16.35
     },
     {
       "question_id": "q14",
@@ -741,17 +741,30 @@
       "reviewer_note": "Paraphrases a direct-deposit update.",
       "retrieved_evidence": [
         {
-          "chunk_id": "payroll.direct-deposit:0-181",
+          "chunk_id": "benefits.enrollment:0-172",
+          "document_id": "benefits-guide",
+          "document_title": "CedarWorks Benefits Guide (Synthetic)",
+          "section_id": "benefits.enrollment",
+          "start_char": 0,
+          "end_char": 172,
+          "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life",
+          "similarity_score": 0.593736,
+          "original_rank": 6,
+          "reranked_position": 1,
+          "reranker_score": -8.677895
+        },
+        {
+          "chunk_id": "payroll.direct-deposit:142-181",
           "document_id": "payroll-guide",
           "document_title": "CedarWorks Payroll Guide (Synthetic)",
           "section_id": "payroll.direct-deposit",
-          "start_char": 0,
+          "start_char": 142,
           "end_char": 181,
-          "text": "Direct-deposit changes submitted in the payroll portal may take one full payroll cycle to become effective. Employees should keep the previous account open until the change appears.",
-          "similarity_score": 0.693473,
+          "text": " account open until the change appears.",
+          "similarity_score": 0.702028,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 2,
+          "reranker_score": -9.391932
         },
         {
           "chunk_id": "payroll.schedule:0-125",
@@ -762,27 +775,14 @@
           "end_char": 125,
           "text": "Employees are paid every other Friday. If Friday is a bank holiday, direct deposits are issued on the preceding business day.",
           "similarity_score": 0.662559,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
-        },
-        {
-          "chunk_id": "payroll.corrections:0-165",
-          "document_id": "payroll-guide",
-          "document_title": "CedarWorks Payroll Guide (Synthetic)",
-          "section_id": "payroll.corrections",
-          "start_char": 0,
-          "end_char": 165,
-          "text": "Employees should report a suspected pay error to Payroll within five business days of the pay date. Confirmed underpayments are corrected within three business days.",
-          "similarity_score": 0.636843,
           "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 3,
+          "reranker_score": -9.520425
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 17.193,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 16.498,
+      "reranking_latency_ms": 14.617
     },
     {
       "question_id": "q15",
@@ -795,48 +795,48 @@
       "reviewer_note": "Paraphrases a suspected underpayment.",
       "retrieved_evidence": [
         {
-          "chunk_id": "payroll.corrections:0-165",
+          "chunk_id": "payroll.corrections:0-159",
           "document_id": "payroll-guide",
           "document_title": "CedarWorks Payroll Guide (Synthetic)",
           "section_id": "payroll.corrections",
           "start_char": 0,
-          "end_char": 165,
-          "text": "Employees should report a suspected pay error to Payroll within five business days of the pay date. Confirmed underpayments are corrected within three business days.",
-          "similarity_score": 0.712283,
+          "end_char": 159,
+          "text": "Employees should report a suspected pay error to Payroll within five business days of the pay date. Confirmed underpayments are corrected within three business",
+          "similarity_score": 0.715517,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": -5.735621
         },
         {
-          "chunk_id": "payroll.schedule:0-125",
-          "document_id": "payroll-guide",
-          "document_title": "CedarWorks Payroll Guide (Synthetic)",
-          "section_id": "payroll.schedule",
+          "chunk_id": "expense.receipts:0-154",
+          "document_id": "expense-policy",
+          "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
+          "section_id": "expense.receipts",
           "start_char": 0,
-          "end_char": 125,
-          "text": "Employees are paid every other Friday. If Friday is a bank holiday, direct deposits are issued on the preceding business day.",
-          "similarity_score": 0.620538,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 154,
+          "text": "Receipts are required for individual expenses of $25 or more. Approved reimbursements are processed within 10 business days and are separate from payroll.",
+          "similarity_score": 0.558832,
+          "original_rank": 5,
+          "reranked_position": 2,
+          "reranker_score": -9.515973
         },
         {
-          "chunk_id": "payroll.direct-deposit:0-181",
+          "chunk_id": "payroll.direct-deposit:0-172",
           "document_id": "payroll-guide",
           "document_title": "CedarWorks Payroll Guide (Synthetic)",
           "section_id": "payroll.direct-deposit",
           "start_char": 0,
-          "end_char": 181,
-          "text": "Direct-deposit changes submitted in the payroll portal may take one full payroll cycle to become effective. Employees should keep the previous account open until the change appears.",
-          "similarity_score": 0.581614,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 172,
+          "text": "Direct-deposit changes submitted in the payroll portal may take one full payroll cycle to become effective. Employees should keep the previous account open until the change",
+          "similarity_score": 0.584955,
+          "original_rank": 4,
+          "reranked_position": 3,
+          "reranker_score": -9.771761
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 19.152,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 18.467,
+      "reranking_latency_ms": 17.188
     },
     {
       "question_id": "q16",
@@ -858,39 +858,39 @@
           "text": "CedarWorks matches 50% of employee retirement contributions up to 6% of eligible pay. Employees may change their contribution percentage at any time.",
           "similarity_score": 0.693039,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": -6.089483
         },
         {
-          "chunk_id": "remote.equipment:0-182",
+          "chunk_id": "remote.equipment:0-115",
           "document_id": "remote-work-policy",
           "document_title": "CedarWorks Remote Work Policy (Synthetic)",
           "section_id": "remote.equipment",
           "start_char": 0,
-          "end_char": 182,
-          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.599175,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 115,
+          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
+          "similarity_score": 0.609944,
+          "original_rank": 3,
+          "reranked_position": 2,
+          "reranker_score": -6.700319
         },
         {
-          "chunk_id": "remote.eligibility:0-174",
-          "document_id": "remote-work-policy",
-          "document_title": "CedarWorks Remote Work Policy (Synthetic)",
-          "section_id": "remote.eligibility",
+          "chunk_id": "pto.accrual:0-131",
+          "document_id": "pto-policy",
+          "document_title": "CedarWorks Paid Time Off Policy (Synthetic)",
+          "section_id": "pto.accrual",
           "start_char": 0,
-          "end_char": 174,
-          "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
-          "similarity_score": 0.559976,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 131,
+          "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportion",
+          "similarity_score": 0.554456,
+          "original_rank": 8,
+          "reranked_position": 3,
+          "reranker_score": -9.571228
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.446,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 16.949,
+      "reranking_latency_ms": 15.189
     },
     {
       "question_id": "q17",
@@ -903,48 +903,48 @@
       "reviewer_note": "Tests the distinction between equipment and recurring service.",
       "retrieved_evidence": [
         {
-          "chunk_id": "remote.equipment:0-182",
+          "chunk_id": "remote.equipment:95-182",
+          "document_id": "remote-work-policy",
+          "document_title": "CedarWorks Remote Work Policy (Synthetic)",
+          "section_id": "remote.equipment",
+          "start_char": 95,
+          "end_char": 182,
+          "text": " cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
+          "similarity_score": 0.692093,
+          "original_rank": 1,
+          "reranked_position": 1,
+          "reranker_score": -6.609857
+        },
+        {
+          "chunk_id": "remote.equipment:0-115",
           "document_id": "remote-work-policy",
           "document_title": "CedarWorks Remote Work Policy (Synthetic)",
           "section_id": "remote.equipment",
           "start_char": 0,
-          "end_char": 182,
-          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.652004,
-          "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
-        },
-        {
-          "chunk_id": "benefits.health:0-136",
-          "document_id": "benefits-guide",
-          "document_title": "CedarWorks Benefits Guide (Synthetic)",
-          "section_id": "benefits.health",
-          "start_char": 0,
-          "end_char": 136,
-          "text": "Health coverage begins on the first day of the month after enrollment is completed. Coverage includes medical, dental, and vision plans.",
-          "similarity_score": 0.585692,
+          "end_char": 115,
+          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
+          "similarity_score": 0.621211,
           "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 2,
+          "reranker_score": -7.771371
         },
         {
-          "chunk_id": "remote.eligibility:0-174",
-          "document_id": "remote-work-policy",
-          "document_title": "CedarWorks Remote Work Policy (Synthetic)",
-          "section_id": "remote.eligibility",
-          "start_char": 0,
-          "end_char": 174,
-          "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
-          "similarity_score": 0.543365,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "chunk_id": "expense.meals:125-159",
+          "document_id": "expense-policy",
+          "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
+          "section_id": "expense.meals",
+          "start_char": 125,
+          "end_char": 159,
+          "text": " the client's name on the receipt.",
+          "similarity_score": 0.550802,
+          "original_rank": 5,
+          "reranked_position": 3,
+          "reranker_score": -11.125042
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 15.116,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 15.32,
+      "reranking_latency_ms": 15.274
     },
     {
       "question_id": "q18",
@@ -966,8 +966,8 @@
           "text": "Air and rail travel should be booked at least 14 days in advance. Bookings made later require manager approval and a short business justification.",
           "similarity_score": 0.790493,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 1.52258
         },
         {
           "chunk_id": "pto.notice:0-147",
@@ -979,26 +979,26 @@
           "text": "Planned PTO requests require at least two business days of notice and manager approval. Unexpected illness should be reported as soon as practical.",
           "similarity_score": 0.642162,
           "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 2,
+          "reranker_score": -4.360295
         },
         {
-          "chunk_id": "remote.eligibility:0-174",
+          "chunk_id": "remote.location:0-171",
           "document_id": "remote-work-policy",
           "document_title": "CedarWorks Remote Work Policy (Synthetic)",
-          "section_id": "remote.eligibility",
+          "section_id": "remote.location",
           "start_char": 0,
-          "end_char": 174,
-          "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
-          "similarity_score": 0.590422,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 171,
+          "text": "Remote work must take place from the employee's approved home state. Working temporarily from another state requires written approval from People Operations before travel.",
+          "similarity_score": 0.590108,
+          "original_rank": 5,
+          "reranked_position": 3,
+          "reranker_score": -8.371528
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 21.851,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 22.363,
+      "reranking_latency_ms": 17.74
     },
     {
       "question_id": "q19",
@@ -1019,9 +1019,9 @@
           "end_char": 126,
           "text": "Employees may carry over up to five unused PTO days into the next calendar year. Additional unused days expire on December 31.",
           "similarity_score": 0.593643,
-          "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "original_rank": 3,
+          "reranked_position": 1,
+          "reranker_score": -3.175748
         },
         {
           "chunk_id": "pto.notice:0-147",
@@ -1032,27 +1032,27 @@
           "end_char": 147,
           "text": "Planned PTO requests require at least two business days of notice and manager approval. Unexpected illness should be reported as soon as practical.",
           "similarity_score": 0.593599,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "original_rank": 4,
+          "reranked_position": 2,
+          "reranker_score": -4.713328
         },
         {
-          "chunk_id": "remote.equipment:0-182",
+          "chunk_id": "remote.eligibility:0-174",
           "document_id": "remote-work-policy",
           "document_title": "CedarWorks Remote Work Policy (Synthetic)",
-          "section_id": "remote.equipment",
+          "section_id": "remote.eligibility",
           "start_char": 0,
-          "end_char": 182,
-          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.59338,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 174,
+          "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
+          "similarity_score": 0.592702,
+          "original_rank": 5,
+          "reranked_position": 3,
+          "reranker_score": -6.962348
         }
       ],
-      "retrieval_hit": false,
-      "retrieval_latency_ms": 19.365,
-      "reranking_latency_ms": 0.0
+      "retrieval_hit": true,
+      "retrieval_latency_ms": 20.855,
+      "reranking_latency_ms": 15.8
     },
     {
       "question_id": "q20",
@@ -1065,48 +1065,48 @@
       "reviewer_note": "Distinguishes remote equipment from travel expenses.",
       "retrieved_evidence": [
         {
-          "chunk_id": "remote.equipment:0-182",
+          "chunk_id": "remote.equipment:0-115",
           "document_id": "remote-work-policy",
           "document_title": "CedarWorks Remote Work Policy (Synthetic)",
           "section_id": "remote.equipment",
           "start_char": 0,
-          "end_char": 182,
-          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.685904,
+          "end_char": 115,
+          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
+          "similarity_score": 0.708293,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 1.413003
         },
         {
-          "chunk_id": "expense.meals:0-159",
-          "document_id": "expense-policy",
-          "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
-          "section_id": "expense.meals",
-          "start_char": 0,
-          "end_char": 159,
-          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on the receipt.",
-          "similarity_score": 0.633561,
+          "chunk_id": "remote.equipment:95-182",
+          "document_id": "remote-work-policy",
+          "document_title": "CedarWorks Remote Work Policy (Synthetic)",
+          "section_id": "remote.equipment",
+          "start_char": 95,
+          "end_char": 182,
+          "text": " cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
+          "similarity_score": 0.673658,
           "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 2,
+          "reranker_score": -7.388754
         },
         {
-          "chunk_id": "expense.receipts:0-154",
-          "document_id": "expense-policy",
-          "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
-          "section_id": "expense.receipts",
+          "chunk_id": "remote.location:0-171",
+          "document_id": "remote-work-policy",
+          "document_title": "CedarWorks Remote Work Policy (Synthetic)",
+          "section_id": "remote.location",
           "start_char": 0,
-          "end_char": 154,
-          "text": "Receipts are required for individual expenses of $25 or more. Approved reimbursements are processed within 10 business days and are separate from payroll.",
-          "similarity_score": 0.599774,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 171,
+          "text": "Remote work must take place from the employee's approved home state. Working temporarily from another state requires written approval from People Operations before travel.",
+          "similarity_score": 0.576996,
+          "original_rank": 5,
+          "reranked_position": 3,
+          "reranker_score": -9.487247
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 20.256,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 21.039,
+      "reranking_latency_ms": 16.153
     },
     {
       "question_id": "q21",
@@ -1119,17 +1119,30 @@
       "reviewer_note": "Distinguishes the general receipt rule from the client-meal exception.",
       "retrieved_evidence": [
         {
-          "chunk_id": "expense.meals:0-159",
+          "chunk_id": "expense.meals:0-146",
           "document_id": "expense-policy",
           "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
           "section_id": "expense.meals",
           "start_char": 0,
+          "end_char": 146,
+          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on",
+          "similarity_score": 0.720621,
+          "original_rank": 2,
+          "reranked_position": 1,
+          "reranker_score": 1.301612
+        },
+        {
+          "chunk_id": "expense.meals:125-159",
+          "document_id": "expense-policy",
+          "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
+          "section_id": "expense.meals",
+          "start_char": 125,
           "end_char": 159,
-          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on the receipt.",
-          "similarity_score": 0.713251,
+          "text": " the client's name on the receipt.",
+          "similarity_score": 0.734372,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 2,
+          "reranker_score": -3.933429
         },
         {
           "chunk_id": "expense.receipts:0-154",
@@ -1140,27 +1153,14 @@
           "end_char": 154,
           "text": "Receipts are required for individual expenses of $25 or more. Approved reimbursements are processed within 10 business days and are separate from payroll.",
           "similarity_score": 0.674522,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
-        },
-        {
-          "chunk_id": "payroll.corrections:0-165",
-          "document_id": "payroll-guide",
-          "document_title": "CedarWorks Payroll Guide (Synthetic)",
-          "section_id": "payroll.corrections",
-          "start_char": 0,
-          "end_char": 165,
-          "text": "Employees should report a suspected pay error to Payroll within five business days of the pay date. Confirmed underpayments are corrected within three business days.",
-          "similarity_score": 0.599697,
           "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 3,
+          "reranker_score": -7.360053
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 18.515,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 20.232,
+      "reranking_latency_ms": 15.256
     },
     {
       "question_id": "q22",
@@ -1173,48 +1173,48 @@
       "reviewer_note": "Distinguishes new-hire enrollment from annual open enrollment.",
       "retrieved_evidence": [
         {
-          "chunk_id": "benefits.enrollment:0-179",
+          "chunk_id": "benefits.enrollment:0-172",
           "document_id": "benefits-guide",
           "document_title": "CedarWorks Benefits Guide (Synthetic)",
           "section_id": "benefits.enrollment",
           "start_char": 0,
-          "end_char": 179,
-          "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life event.",
-          "similarity_score": 0.805092,
+          "end_char": 172,
+          "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life",
+          "similarity_score": 0.817058,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 3.762954
         },
         {
-          "chunk_id": "remote.eligibility:0-174",
-          "document_id": "remote-work-policy",
-          "document_title": "CedarWorks Remote Work Policy (Synthetic)",
-          "section_id": "remote.eligibility",
-          "start_char": 0,
-          "end_char": 174,
-          "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
-          "similarity_score": 0.652353,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
-        },
-        {
-          "chunk_id": "benefits.health:0-136",
+          "chunk_id": "benefits.enrollment:140-179",
           "document_id": "benefits-guide",
           "document_title": "CedarWorks Benefits Guide (Synthetic)",
-          "section_id": "benefits.health",
-          "start_char": 0,
-          "end_char": 136,
-          "text": "Health coverage begins on the first day of the month after enrollment is completed. Coverage includes medical, dental, and vision plans.",
-          "similarity_score": 0.631631,
+          "section_id": "benefits.enrollment",
+          "start_char": 140,
+          "end_char": 179,
+          "text": " enrollment or a qualifying life event.",
+          "similarity_score": 0.675834,
+          "original_rank": 2,
+          "reranked_position": 2,
+          "reranker_score": -8.513378
+        },
+        {
+          "chunk_id": "payroll.corrections:123-165",
+          "document_id": "payroll-guide",
+          "document_title": "CedarWorks Payroll Guide (Synthetic)",
+          "section_id": "payroll.corrections",
+          "start_char": 123,
+          "end_char": 165,
+          "text": " are corrected within three business days.",
+          "similarity_score": 0.665242,
           "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 3,
+          "reranker_score": -8.774549
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 18.954,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 20.692,
+      "reranking_latency_ms": 16.026
     },
     {
       "question_id": "q23",
@@ -1236,39 +1236,39 @@
           "text": "Receipts are required for individual expenses of $25 or more. Approved reimbursements are processed within 10 business days and are separate from payroll.",
           "similarity_score": 0.781353,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 0.509484
         },
         {
-          "chunk_id": "payroll.schedule:0-125",
+          "chunk_id": "payroll.corrections:0-159",
           "document_id": "payroll-guide",
           "document_title": "CedarWorks Payroll Guide (Synthetic)",
-          "section_id": "payroll.schedule",
+          "section_id": "payroll.corrections",
           "start_char": 0,
-          "end_char": 125,
-          "text": "Employees are paid every other Friday. If Friday is a bank holiday, direct deposits are issued on the preceding business day.",
-          "similarity_score": 0.645403,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 159,
+          "text": "Employees should report a suspected pay error to Payroll within five business days of the pay date. Confirmed underpayments are corrected within three business",
+          "similarity_score": 0.644329,
+          "original_rank": 4,
+          "reranked_position": 2,
+          "reranker_score": -10.658298
         },
         {
-          "chunk_id": "expense.meals:0-159",
+          "chunk_id": "expense.meals:0-146",
           "document_id": "expense-policy",
           "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
           "section_id": "expense.meals",
           "start_char": 0,
-          "end_char": 159,
-          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on the receipt.",
-          "similarity_score": 0.63893,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 146,
+          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on",
+          "similarity_score": 0.64203,
+          "original_rank": 5,
+          "reranked_position": 3,
+          "reranker_score": -10.688441
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 17.679,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 17.89,
+      "reranking_latency_ms": 15.816
     },
     {
       "question_id": "q24",
@@ -1290,8 +1290,8 @@
           "text": "Remote work must take place from the employee's approved home state. Working temporarily from another state requires written approval from People Operations before travel.",
           "similarity_score": 0.772689,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": 4.564722
         },
         {
           "chunk_id": "remote.eligibility:0-174",
@@ -1303,26 +1303,26 @@
           "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
           "similarity_score": 0.672572,
           "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 2,
+          "reranker_score": -6.886947
         },
         {
-          "chunk_id": "remote.equipment:0-182",
+          "chunk_id": "remote.equipment:0-115",
           "document_id": "remote-work-policy",
           "document_title": "CedarWorks Remote Work Policy (Synthetic)",
           "section_id": "remote.equipment",
           "start_char": 0,
-          "end_char": 182,
-          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.61603,
+          "end_char": 115,
+          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
+          "similarity_score": 0.628073,
           "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 3,
+          "reranker_score": -7.723483
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 17.285,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 18.085,
+      "reranking_latency_ms": 15.308
     },
     {
       "question_id": "q25",
@@ -1343,40 +1343,40 @@
           "end_char": 136,
           "text": "Health coverage begins on the first day of the month after enrollment is completed. Coverage includes medical, dental, and vision plans.",
           "similarity_score": 0.628275,
-          "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
-        },
-        {
-          "chunk_id": "benefits.enrollment:0-179",
-          "document_id": "benefits-guide",
-          "document_title": "CedarWorks Benefits Guide (Synthetic)",
-          "section_id": "benefits.enrollment",
-          "start_char": 0,
-          "end_char": 179,
-          "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life event.",
-          "similarity_score": 0.590237,
           "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": -8.08801
         },
         {
-          "chunk_id": "remote.equipment:0-182",
-          "document_id": "remote-work-policy",
-          "document_title": "CedarWorks Remote Work Policy (Synthetic)",
-          "section_id": "remote.equipment",
-          "start_char": 0,
-          "end_char": 182,
-          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.552486,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "chunk_id": "payroll.direct-deposit:142-181",
+          "document_id": "payroll-guide",
+          "document_title": "CedarWorks Payroll Guide (Synthetic)",
+          "section_id": "payroll.direct-deposit",
+          "start_char": 142,
+          "end_char": 181,
+          "text": " account open until the change appears.",
+          "similarity_score": 0.541536,
+          "original_rank": 8,
+          "reranked_position": 2,
+          "reranker_score": -11.197831
+        },
+        {
+          "chunk_id": "payroll.corrections:123-165",
+          "document_id": "payroll-guide",
+          "document_title": "CedarWorks Payroll Guide (Synthetic)",
+          "section_id": "payroll.corrections",
+          "start_char": 123,
+          "end_char": 165,
+          "text": " are corrected within three business days.",
+          "similarity_score": 0.54258,
+          "original_rank": 7,
+          "reranked_position": 3,
+          "reranker_score": -11.224463
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 14.871,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 15.442,
+      "reranking_latency_ms": 14.376
     },
     {
       "question_id": "q26",
@@ -1398,39 +1398,39 @@
           "text": "CedarWorks matches 50% of employee retirement contributions up to 6% of eligible pay. Employees may change their contribution percentage at any time.",
           "similarity_score": 0.720779,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": -3.161749
         },
         {
-          "chunk_id": "remote.location:0-171",
-          "document_id": "remote-work-policy",
-          "document_title": "CedarWorks Remote Work Policy (Synthetic)",
-          "section_id": "remote.location",
-          "start_char": 0,
-          "end_char": 171,
-          "text": "Remote work must take place from the employee's approved home state. Working temporarily from another state requires written approval from People Operations before travel.",
-          "similarity_score": 0.585816,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
-        },
-        {
-          "chunk_id": "remote.equipment:0-182",
+          "chunk_id": "remote.equipment:0-115",
           "document_id": "remote-work-policy",
           "document_title": "CedarWorks Remote Work Policy (Synthetic)",
           "section_id": "remote.equipment",
           "start_char": 0,
-          "end_char": 182,
-          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.569437,
+          "end_char": 115,
+          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
+          "similarity_score": 0.581978,
+          "original_rank": 4,
+          "reranked_position": 2,
+          "reranker_score": -11.109129
+        },
+        {
+          "chunk_id": "payroll.corrections:123-165",
+          "document_id": "payroll-guide",
+          "document_title": "CedarWorks Payroll Guide (Synthetic)",
+          "section_id": "payroll.corrections",
+          "start_char": 123,
+          "end_char": 165,
+          "text": " are corrected within three business days.",
+          "similarity_score": 0.582122,
           "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 3,
+          "reranker_score": -11.115215
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 15.392,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 16.281,
+      "reranking_latency_ms": 14.351
     },
     {
       "question_id": "q27",
@@ -1443,48 +1443,48 @@
       "reviewer_note": "Cryptocurrency payment is not mentioned in the corpus.",
       "retrieved_evidence": [
         {
-          "chunk_id": "payroll.direct-deposit:0-181",
+          "chunk_id": "payroll.direct-deposit:0-172",
           "document_id": "payroll-guide",
           "document_title": "CedarWorks Payroll Guide (Synthetic)",
           "section_id": "payroll.direct-deposit",
           "start_char": 0,
-          "end_char": 181,
-          "text": "Direct-deposit changes submitted in the payroll portal may take one full payroll cycle to become effective. Employees should keep the previous account open until the change appears.",
-          "similarity_score": 0.624602,
+          "end_char": 172,
+          "text": "Direct-deposit changes submitted in the payroll portal may take one full payroll cycle to become effective. Employees should keep the previous account open until the change",
+          "similarity_score": 0.635585,
           "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": -6.392397
         },
         {
-          "chunk_id": "payroll.schedule:0-125",
+          "chunk_id": "payroll.corrections:0-159",
           "document_id": "payroll-guide",
           "document_title": "CedarWorks Payroll Guide (Synthetic)",
-          "section_id": "payroll.schedule",
+          "section_id": "payroll.corrections",
           "start_char": 0,
-          "end_char": 125,
-          "text": "Employees are paid every other Friday. If Friday is a bank holiday, direct deposits are issued on the preceding business day.",
-          "similarity_score": 0.615523,
+          "end_char": 159,
+          "text": "Employees should report a suspected pay error to Payroll within five business days of the pay date. Confirmed underpayments are corrected within three business",
+          "similarity_score": 0.617452,
           "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 2,
+          "reranker_score": -7.440392
         },
         {
-          "chunk_id": "benefits.retirement:0-149",
-          "document_id": "benefits-guide",
-          "document_title": "CedarWorks Benefits Guide (Synthetic)",
-          "section_id": "benefits.retirement",
+          "chunk_id": "remote.equipment:0-115",
+          "document_id": "remote-work-policy",
+          "document_title": "CedarWorks Remote Work Policy (Synthetic)",
+          "section_id": "remote.equipment",
           "start_char": 0,
-          "end_char": 149,
-          "text": "CedarWorks matches 50% of employee retirement contributions up to 6% of eligible pay. Employees may change their contribution percentage at any time.",
-          "similarity_score": 0.612229,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 115,
+          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
+          "similarity_score": 0.592758,
+          "original_rank": 6,
+          "reranked_position": 3,
+          "reranker_score": -8.997944
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 13.862,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 14.354,
+      "reranking_latency_ms": 14.792
     },
     {
       "question_id": "q28",
@@ -1497,30 +1497,17 @@
       "reviewer_note": "Sabbatical leave is not mentioned in the corpus.",
       "retrieved_evidence": [
         {
-          "chunk_id": "remote.eligibility:0-174",
-          "document_id": "remote-work-policy",
-          "document_title": "CedarWorks Remote Work Policy (Synthetic)",
-          "section_id": "remote.eligibility",
-          "start_char": 0,
-          "end_char": 174,
-          "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
-          "similarity_score": 0.640037,
-          "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
-        },
-        {
-          "chunk_id": "pto.accrual:0-136",
-          "document_id": "pto-policy",
-          "document_title": "CedarWorks Paid Time Off Policy (Synthetic)",
-          "section_id": "pto.accrual",
-          "start_char": 0,
-          "end_char": 136,
-          "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportionally.",
-          "similarity_score": 0.609603,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "chunk_id": "payroll.corrections:123-165",
+          "document_id": "payroll-guide",
+          "document_title": "CedarWorks Payroll Guide (Synthetic)",
+          "section_id": "payroll.corrections",
+          "start_char": 123,
+          "end_char": 165,
+          "text": " are corrected within three business days.",
+          "similarity_score": 0.594552,
+          "original_rank": 7,
+          "reranked_position": 1,
+          "reranker_score": -7.171329
         },
         {
           "chunk_id": "pto.carryover:0-126",
@@ -1531,14 +1518,27 @@
           "end_char": 126,
           "text": "Employees may carry over up to five unused PTO days into the next calendar year. Additional unused days expire on December 31.",
           "similarity_score": 0.596714,
+          "original_rank": 6,
+          "reranked_position": 2,
+          "reranker_score": -7.315762
+        },
+        {
+          "chunk_id": "benefits.enrollment:0-172",
+          "document_id": "benefits-guide",
+          "document_title": "CedarWorks Benefits Guide (Synthetic)",
+          "section_id": "benefits.enrollment",
+          "start_char": 0,
+          "end_char": 172,
+          "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life",
+          "similarity_score": 0.605405,
           "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 3,
+          "reranker_score": -7.879677
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 18.304,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 19.296,
+      "reranking_latency_ms": 15.881
     },
     {
       "question_id": "q29",
@@ -1559,40 +1559,40 @@
           "end_char": 154,
           "text": "Receipts are required for individual expenses of $25 or more. Approved reimbursements are processed within 10 business days and are separate from payroll.",
           "similarity_score": 0.600945,
-          "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
+          "original_rank": 2,
+          "reranked_position": 1,
+          "reranker_score": -3.789432
         },
         {
-          "chunk_id": "expense.meals:0-159",
+          "chunk_id": "expense.meals:0-146",
           "document_id": "expense-policy",
           "document_title": "CedarWorks Expense Reimbursement Policy (Synthetic)",
           "section_id": "expense.meals",
           "start_char": 0,
-          "end_char": 159,
-          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on the receipt.",
-          "similarity_score": 0.585652,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 146,
+          "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on",
+          "similarity_score": 0.597753,
+          "original_rank": 3,
+          "reranked_position": 2,
+          "reranker_score": -8.115604
         },
         {
-          "chunk_id": "remote.equipment:0-182",
+          "chunk_id": "remote.equipment:0-115",
           "document_id": "remote-work-policy",
           "document_title": "CedarWorks Remote Work Policy (Synthetic)",
           "section_id": "remote.equipment",
           "start_char": 0,
-          "end_char": 182,
-          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.569157,
-          "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "end_char": 115,
+          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
+          "similarity_score": 0.576612,
+          "original_rank": 5,
+          "reranked_position": 3,
+          "reranker_score": -10.774495
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 18.823,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 17.717,
+      "reranking_latency_ms": 18.514
     },
     {
       "question_id": "q30",
@@ -1605,48 +1605,48 @@
       "reviewer_note": "Office parking is not mentioned in the corpus.",
       "retrieved_evidence": [
         {
-          "chunk_id": "benefits.retirement:0-149",
-          "document_id": "benefits-guide",
-          "document_title": "CedarWorks Benefits Guide (Synthetic)",
-          "section_id": "benefits.retirement",
-          "start_char": 0,
-          "end_char": 149,
-          "text": "CedarWorks matches 50% of employee retirement contributions up to 6% of eligible pay. Employees may change their contribution percentage at any time.",
-          "similarity_score": 0.594189,
-          "original_rank": 1,
-          "reranked_position": null,
-          "reranker_score": null
-        },
-        {
-          "chunk_id": "remote.location:0-171",
+          "chunk_id": "remote.equipment:0-115",
           "document_id": "remote-work-policy",
           "document_title": "CedarWorks Remote Work Policy (Synthetic)",
-          "section_id": "remote.location",
+          "section_id": "remote.equipment",
           "start_char": 0,
-          "end_char": 171,
-          "text": "Remote work must take place from the employee's approved home state. Working temporarily from another state requires written approval from People Operations before travel.",
-          "similarity_score": 0.548287,
-          "original_rank": 2,
-          "reranked_position": null,
-          "reranker_score": null
-        },
-        {
-          "chunk_id": "remote.eligibility:0-174",
-          "document_id": "remote-work-policy",
-          "document_title": "CedarWorks Remote Work Policy (Synthetic)",
-          "section_id": "remote.eligibility",
-          "start_char": 0,
-          "end_char": 174,
-          "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
-          "similarity_score": 0.546318,
+          "end_char": 115,
+          "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
+          "similarity_score": 0.565568,
           "original_rank": 3,
-          "reranked_position": null,
-          "reranker_score": null
+          "reranked_position": 1,
+          "reranker_score": -9.653118
+        },
+        {
+          "chunk_id": "pto.accrual:98-136",
+          "document_id": "pto-policy",
+          "document_title": "CedarWorks Paid Time Off Policy (Synthetic)",
+          "section_id": "pto.accrual",
+          "start_char": 98,
+          "end_char": 136,
+          "text": " employees accrue time proportionally.",
+          "similarity_score": 0.576003,
+          "original_rank": 2,
+          "reranked_position": 2,
+          "reranker_score": -9.666435
+        },
+        {
+          "chunk_id": "pto.carryover:0-126",
+          "document_id": "pto-policy",
+          "document_title": "CedarWorks Paid Time Off Policy (Synthetic)",
+          "section_id": "pto.carryover",
+          "start_char": 0,
+          "end_char": 126,
+          "text": "Employees may carry over up to five unused PTO days into the next calendar year. Additional unused days expire on December 31.",
+          "similarity_score": 0.539679,
+          "original_rank": 10,
+          "reranked_position": 3,
+          "reranker_score": -10.515358
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 13.836,
-      "reranking_latency_ms": 0.0
+      "retrieval_latency_ms": 18.024,
+      "reranking_latency_ms": 14.772
     }
   ]
 }

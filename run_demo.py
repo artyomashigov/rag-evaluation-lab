@@ -24,4 +24,9 @@ if __name__ == "__main__":
         {**baseline, "chunk_size": 30, "top_k": 5},
         Path("results/top-5.json"),
     )
-    print(f"Saved {len(outputs)} chunk-size configurations and the top-5 variant")
+    run_evaluation(
+        benchmark,
+        {**baseline, "chunk_size": 30, "reranking": True},
+        Path("results/reranked.json"),
+    )
+    print("Saved five controlled retrieval configurations")

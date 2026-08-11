@@ -4,7 +4,9 @@
     "chunk_overlap": 5,
     "top_k": 3,
     "reranking": false,
-    "embedding_model": "Alibaba-NLP/gte-modernbert-base"
+    "candidate_pool_size": 10,
+    "embedding_model": "Alibaba-NLP/gte-modernbert-base",
+    "reranker_model": "cross-encoder/ms-marco-MiniLM-L6-v2"
   },
   "benchmark_summary": {
     "document_count": 5,
@@ -22,7 +24,8 @@
   },
   "metrics": {
     "retrieval_hit_rate": 0.9583,
-    "average_retrieval_latency_ms": 17.635
+    "average_retrieval_latency_ms": 17.392,
+    "average_reranking_latency_ms": 0.0
   },
   "questions": [
     {
@@ -43,7 +46,10 @@
           "start_char": 0,
           "end_char": 126,
           "text": "Employees may carry over up to five unused PTO days into the next calendar year. Additional unused days expire on December 31.",
-          "similarity_score": 0.908062
+          "similarity_score": 0.908062,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.notice:0-147",
@@ -53,7 +59,10 @@
           "start_char": 0,
           "end_char": 147,
           "text": "Planned PTO requests require at least two business days of notice and manager approval. Unexpected illness should be reported as soon as practical.",
-          "similarity_score": 0.681282
+          "similarity_score": 0.681282,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.accrual:0-131",
@@ -63,11 +72,15 @@
           "start_char": 0,
           "end_char": 131,
           "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportion",
-          "similarity_score": 0.678581
+          "similarity_score": 0.678581,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 19.893
+      "retrieval_latency_ms": 19.139,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q02",
@@ -87,7 +100,10 @@
           "start_char": 0,
           "end_char": 131,
           "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportion",
-          "similarity_score": 0.804454
+          "similarity_score": 0.804454,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.accrual:98-136",
@@ -97,7 +113,10 @@
           "start_char": 98,
           "end_char": 136,
           "text": " employees accrue time proportionally.",
-          "similarity_score": 0.741914
+          "similarity_score": 0.741914,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.carryover:0-126",
@@ -107,11 +126,15 @@
           "start_char": 0,
           "end_char": 126,
           "text": "Employees may carry over up to five unused PTO days into the next calendar year. Additional unused days expire on December 31.",
-          "similarity_score": 0.682464
+          "similarity_score": 0.682464,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 20.63
+      "retrieval_latency_ms": 21.138,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q03",
@@ -131,7 +154,10 @@
           "start_char": 0,
           "end_char": 147,
           "text": "Planned PTO requests require at least two business days of notice and manager approval. Unexpected illness should be reported as soon as practical.",
-          "similarity_score": 0.846895
+          "similarity_score": 0.846895,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.carryover:0-126",
@@ -141,7 +167,10 @@
           "start_char": 0,
           "end_char": 126,
           "text": "Employees may carry over up to five unused PTO days into the next calendar year. Additional unused days expire on December 31.",
-          "similarity_score": 0.720953
+          "similarity_score": 0.720953,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.accrual:0-131",
@@ -151,11 +180,15 @@
           "start_char": 0,
           "end_char": 131,
           "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportion",
-          "similarity_score": 0.630636
+          "similarity_score": 0.630636,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.122
+      "retrieval_latency_ms": 16.983,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q04",
@@ -175,7 +208,10 @@
           "start_char": 0,
           "end_char": 174,
           "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
-          "similarity_score": 0.900561
+          "similarity_score": 0.900561,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "remote.equipment:0-115",
@@ -185,7 +221,10 @@
           "start_char": 0,
           "end_char": 115,
           "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
-          "similarity_score": 0.738373
+          "similarity_score": 0.738373,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "remote.location:0-171",
@@ -195,11 +234,15 @@
           "start_char": 0,
           "end_char": 171,
           "text": "Remote work must take place from the employee's approved home state. Working temporarily from another state requires written approval from People Operations before travel.",
-          "similarity_score": 0.729647
+          "similarity_score": 0.729647,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 18.003
+      "retrieval_latency_ms": 17.319,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q05",
@@ -219,7 +262,10 @@
           "start_char": 0,
           "end_char": 171,
           "text": "Remote work must take place from the employee's approved home state. Working temporarily from another state requires written approval from People Operations before travel.",
-          "similarity_score": 0.790954
+          "similarity_score": 0.790954,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "remote.eligibility:0-174",
@@ -229,7 +275,10 @@
           "start_char": 0,
           "end_char": 174,
           "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
-          "similarity_score": 0.773529
+          "similarity_score": 0.773529,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "remote.equipment:0-115",
@@ -239,11 +288,15 @@
           "start_char": 0,
           "end_char": 115,
           "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
-          "similarity_score": 0.728016
+          "similarity_score": 0.728016,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 13.785
+      "retrieval_latency_ms": 14.647,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q06",
@@ -263,7 +316,10 @@
           "start_char": 0,
           "end_char": 115,
           "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
-          "similarity_score": 0.814398
+          "similarity_score": 0.814398,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "expense.meals:0-146",
@@ -273,7 +329,10 @@
           "start_char": 0,
           "end_char": 146,
           "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on",
-          "similarity_score": 0.61952
+          "similarity_score": 0.61952,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "remote.equipment:95-182",
@@ -283,11 +342,15 @@
           "start_char": 95,
           "end_char": 182,
           "text": " cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.617927
+          "similarity_score": 0.617927,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.272
+      "retrieval_latency_ms": 15.984,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q07",
@@ -307,7 +370,10 @@
           "start_char": 0,
           "end_char": 154,
           "text": "Receipts are required for individual expenses of $25 or more. Approved reimbursements are processed within 10 business days and are separate from payroll.",
-          "similarity_score": 0.761145
+          "similarity_score": 0.761145,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "expense.meals:125-159",
@@ -317,7 +383,10 @@
           "start_char": 125,
           "end_char": 159,
           "text": " the client's name on the receipt.",
-          "similarity_score": 0.695245
+          "similarity_score": 0.695245,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "expense.meals:0-146",
@@ -327,11 +396,15 @@
           "start_char": 0,
           "end_char": 146,
           "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on",
-          "similarity_score": 0.635734
+          "similarity_score": 0.635734,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.392
+      "retrieval_latency_ms": 17.307,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q08",
@@ -351,7 +424,10 @@
           "start_char": 0,
           "end_char": 146,
           "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on",
-          "similarity_score": 0.869757
+          "similarity_score": 0.869757,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "expense.travel:0-146",
@@ -361,7 +437,10 @@
           "start_char": 0,
           "end_char": 146,
           "text": "Air and rail travel should be booked at least 14 days in advance. Bookings made later require manager approval and a short business justification.",
-          "similarity_score": 0.644682
+          "similarity_score": 0.644682,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "expense.receipts:0-154",
@@ -371,11 +450,15 @@
           "start_char": 0,
           "end_char": 154,
           "text": "Receipts are required for individual expenses of $25 or more. Approved reimbursements are processed within 10 business days and are separate from payroll.",
-          "similarity_score": 0.632963
+          "similarity_score": 0.632963,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 17.951
+      "retrieval_latency_ms": 16.527,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q09",
@@ -395,7 +478,10 @@
           "start_char": 0,
           "end_char": 146,
           "text": "Air and rail travel should be booked at least 14 days in advance. Bookings made later require manager approval and a short business justification.",
-          "similarity_score": 0.877551
+          "similarity_score": 0.877551,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "expense.meals:0-146",
@@ -405,7 +491,10 @@
           "start_char": 0,
           "end_char": 146,
           "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on",
-          "similarity_score": 0.596749
+          "similarity_score": 0.596749,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "payroll.corrections:123-165",
@@ -415,11 +504,15 @@
           "start_char": 123,
           "end_char": 165,
           "text": " are corrected within three business days.",
-          "similarity_score": 0.593158
+          "similarity_score": 0.593158,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.139
+      "retrieval_latency_ms": 15.08,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q10",
@@ -439,7 +532,10 @@
           "start_char": 0,
           "end_char": 172,
           "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life",
-          "similarity_score": 0.870471
+          "similarity_score": 0.870471,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "benefits.enrollment:140-179",
@@ -449,7 +545,10 @@
           "start_char": 140,
           "end_char": 179,
           "text": " enrollment or a qualifying life event.",
-          "similarity_score": 0.712517
+          "similarity_score": 0.712517,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "remote.eligibility:0-174",
@@ -459,11 +558,15 @@
           "start_char": 0,
           "end_char": 174,
           "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
-          "similarity_score": 0.684174
+          "similarity_score": 0.684174,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 17.912
+      "retrieval_latency_ms": 21.492,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q11",
@@ -483,7 +586,10 @@
           "start_char": 0,
           "end_char": 136,
           "text": "Health coverage begins on the first day of the month after enrollment is completed. Coverage includes medical, dental, and vision plans.",
-          "similarity_score": 0.862039
+          "similarity_score": 0.862039,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "benefits.enrollment:140-179",
@@ -493,7 +599,10 @@
           "start_char": 140,
           "end_char": 179,
           "text": " enrollment or a qualifying life event.",
-          "similarity_score": 0.714421
+          "similarity_score": 0.714421,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "benefits.enrollment:0-172",
@@ -503,11 +612,15 @@
           "start_char": 0,
           "end_char": 172,
           "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life",
-          "similarity_score": 0.712044
+          "similarity_score": 0.712044,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 12.199
+      "retrieval_latency_ms": 15.725,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q12",
@@ -527,7 +640,10 @@
           "start_char": 0,
           "end_char": 125,
           "text": "Employees are paid every other Friday. If Friday is a bank holiday, direct deposits are issued on the preceding business day.",
-          "similarity_score": 0.730456
+          "similarity_score": 0.730456,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.accrual:98-136",
@@ -537,7 +653,10 @@
           "start_char": 98,
           "end_char": 136,
           "text": " employees accrue time proportionally.",
-          "similarity_score": 0.719836
+          "similarity_score": 0.719836,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.accrual:0-131",
@@ -547,11 +666,15 @@
           "start_char": 0,
           "end_char": 131,
           "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportion",
-          "similarity_score": 0.674146
+          "similarity_score": 0.674146,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 12.11
+      "retrieval_latency_ms": 14.258,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q13",
@@ -571,7 +694,10 @@
           "start_char": 0,
           "end_char": 126,
           "text": "Employees may carry over up to five unused PTO days into the next calendar year. Additional unused days expire on December 31.",
-          "similarity_score": 0.678259
+          "similarity_score": 0.678259,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.accrual:0-131",
@@ -581,7 +707,10 @@
           "start_char": 0,
           "end_char": 131,
           "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportion",
-          "similarity_score": 0.648943
+          "similarity_score": 0.648943,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.accrual:98-136",
@@ -591,11 +720,15 @@
           "start_char": 98,
           "end_char": 136,
           "text": " employees accrue time proportionally.",
-          "similarity_score": 0.620898
+          "similarity_score": 0.620898,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 17.735
+      "retrieval_latency_ms": 17.63,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q14",
@@ -615,7 +748,10 @@
           "start_char": 142,
           "end_char": 181,
           "text": " account open until the change appears.",
-          "similarity_score": 0.702028
+          "similarity_score": 0.702028,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "payroll.direct-deposit:0-172",
@@ -625,7 +761,10 @@
           "start_char": 0,
           "end_char": 172,
           "text": "Direct-deposit changes submitted in the payroll portal may take one full payroll cycle to become effective. Employees should keep the previous account open until the change",
-          "similarity_score": 0.70012
+          "similarity_score": 0.70012,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "payroll.schedule:0-125",
@@ -635,11 +774,15 @@
           "start_char": 0,
           "end_char": 125,
           "text": "Employees are paid every other Friday. If Friday is a bank holiday, direct deposits are issued on the preceding business day.",
-          "similarity_score": 0.662559
+          "similarity_score": 0.662559,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.47
+      "retrieval_latency_ms": 17.179,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q15",
@@ -659,7 +802,10 @@
           "start_char": 0,
           "end_char": 159,
           "text": "Employees should report a suspected pay error to Payroll within five business days of the pay date. Confirmed underpayments are corrected within three business",
-          "similarity_score": 0.715517
+          "similarity_score": 0.715517,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "payroll.corrections:123-165",
@@ -669,7 +815,10 @@
           "start_char": 123,
           "end_char": 165,
           "text": " are corrected within three business days.",
-          "similarity_score": 0.623146
+          "similarity_score": 0.623146,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "payroll.schedule:0-125",
@@ -679,11 +828,15 @@
           "start_char": 0,
           "end_char": 125,
           "text": "Employees are paid every other Friday. If Friday is a bank holiday, direct deposits are issued on the preceding business day.",
-          "similarity_score": 0.620538
+          "similarity_score": 0.620538,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 19.84
+      "retrieval_latency_ms": 18.239,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q16",
@@ -703,7 +856,10 @@
           "start_char": 0,
           "end_char": 149,
           "text": "CedarWorks matches 50% of employee retirement contributions up to 6% of eligible pay. Employees may change their contribution percentage at any time.",
-          "similarity_score": 0.693039
+          "similarity_score": 0.693039,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.accrual:98-136",
@@ -713,7 +869,10 @@
           "start_char": 98,
           "end_char": 136,
           "text": " employees accrue time proportionally.",
-          "similarity_score": 0.615496
+          "similarity_score": 0.615496,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "remote.equipment:0-115",
@@ -723,11 +882,15 @@
           "start_char": 0,
           "end_char": 115,
           "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
-          "similarity_score": 0.609944
+          "similarity_score": 0.609944,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.511
+      "retrieval_latency_ms": 17.649,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q17",
@@ -747,7 +910,10 @@
           "start_char": 95,
           "end_char": 182,
           "text": " cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.692093
+          "similarity_score": 0.692093,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "remote.equipment:0-115",
@@ -757,7 +923,10 @@
           "start_char": 0,
           "end_char": 115,
           "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
-          "similarity_score": 0.621211
+          "similarity_score": 0.621211,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "payroll.corrections:123-165",
@@ -767,11 +936,15 @@
           "start_char": 123,
           "end_char": 165,
           "text": " are corrected within three business days.",
-          "similarity_score": 0.597662
+          "similarity_score": 0.597662,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 16.138
+      "retrieval_latency_ms": 15.43,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q18",
@@ -791,7 +964,10 @@
           "start_char": 0,
           "end_char": 146,
           "text": "Air and rail travel should be booked at least 14 days in advance. Bookings made later require manager approval and a short business justification.",
-          "similarity_score": 0.790493
+          "similarity_score": 0.790493,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.notice:0-147",
@@ -801,7 +977,10 @@
           "start_char": 0,
           "end_char": 147,
           "text": "Planned PTO requests require at least two business days of notice and manager approval. Unexpected illness should be reported as soon as practical.",
-          "similarity_score": 0.642162
+          "similarity_score": 0.642162,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "expense.meals:0-146",
@@ -811,11 +990,15 @@
           "start_char": 0,
           "end_char": 146,
           "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on",
-          "similarity_score": 0.607389
+          "similarity_score": 0.607389,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 21.407
+      "retrieval_latency_ms": 21.096,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q19",
@@ -835,7 +1018,10 @@
           "start_char": 95,
           "end_char": 182,
           "text": " cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.597773
+          "similarity_score": 0.597773,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.accrual:98-136",
@@ -845,7 +1031,10 @@
           "start_char": 98,
           "end_char": 136,
           "text": " employees accrue time proportionally.",
-          "similarity_score": 0.596517
+          "similarity_score": 0.596517,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.carryover:0-126",
@@ -855,11 +1044,15 @@
           "start_char": 0,
           "end_char": 126,
           "text": "Employees may carry over up to five unused PTO days into the next calendar year. Additional unused days expire on December 31.",
-          "similarity_score": 0.593643
+          "similarity_score": 0.593643,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 19.19
+      "retrieval_latency_ms": 20.093,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q20",
@@ -879,7 +1072,10 @@
           "start_char": 0,
           "end_char": 115,
           "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
-          "similarity_score": 0.708293
+          "similarity_score": 0.708293,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "remote.equipment:95-182",
@@ -889,7 +1085,10 @@
           "start_char": 95,
           "end_char": 182,
           "text": " cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.673658
+          "similarity_score": 0.673658,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "expense.meals:0-146",
@@ -899,11 +1098,15 @@
           "start_char": 0,
           "end_char": 146,
           "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on",
-          "similarity_score": 0.636389
+          "similarity_score": 0.636389,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 21.857
+      "retrieval_latency_ms": 19.924,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q21",
@@ -923,7 +1126,10 @@
           "start_char": 125,
           "end_char": 159,
           "text": " the client's name on the receipt.",
-          "similarity_score": 0.734372
+          "similarity_score": 0.734372,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "expense.meals:0-146",
@@ -933,7 +1139,10 @@
           "start_char": 0,
           "end_char": 146,
           "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on",
-          "similarity_score": 0.720621
+          "similarity_score": 0.720621,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "expense.receipts:0-154",
@@ -943,11 +1152,15 @@
           "start_char": 0,
           "end_char": 154,
           "text": "Receipts are required for individual expenses of $25 or more. Approved reimbursements are processed within 10 business days and are separate from payroll.",
-          "similarity_score": 0.674522
+          "similarity_score": 0.674522,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 19.039
+      "retrieval_latency_ms": 19.533,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q22",
@@ -967,7 +1180,10 @@
           "start_char": 0,
           "end_char": 172,
           "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life",
-          "similarity_score": 0.817058
+          "similarity_score": 0.817058,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "benefits.enrollment:140-179",
@@ -977,7 +1193,10 @@
           "start_char": 140,
           "end_char": 179,
           "text": " enrollment or a qualifying life event.",
-          "similarity_score": 0.675834
+          "similarity_score": 0.675834,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "payroll.corrections:123-165",
@@ -987,11 +1206,15 @@
           "start_char": 123,
           "end_char": 165,
           "text": " are corrected within three business days.",
-          "similarity_score": 0.665242
+          "similarity_score": 0.665242,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 19.91
+      "retrieval_latency_ms": 20.2,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q23",
@@ -1011,7 +1234,10 @@
           "start_char": 0,
           "end_char": 154,
           "text": "Receipts are required for individual expenses of $25 or more. Approved reimbursements are processed within 10 business days and are separate from payroll.",
-          "similarity_score": 0.781353
+          "similarity_score": 0.781353,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "payroll.corrections:123-165",
@@ -1021,7 +1247,10 @@
           "start_char": 123,
           "end_char": 165,
           "text": " are corrected within three business days.",
-          "similarity_score": 0.647802
+          "similarity_score": 0.647802,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "payroll.schedule:0-125",
@@ -1031,11 +1260,15 @@
           "start_char": 0,
           "end_char": 125,
           "text": "Employees are paid every other Friday. If Friday is a bank holiday, direct deposits are issued on the preceding business day.",
-          "similarity_score": 0.645403
+          "similarity_score": 0.645403,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 24.853
+      "retrieval_latency_ms": 17.237,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q24",
@@ -1055,7 +1288,10 @@
           "start_char": 0,
           "end_char": 171,
           "text": "Remote work must take place from the employee's approved home state. Working temporarily from another state requires written approval from People Operations before travel.",
-          "similarity_score": 0.772689
+          "similarity_score": 0.772689,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "remote.eligibility:0-174",
@@ -1065,7 +1301,10 @@
           "start_char": 0,
           "end_char": 174,
           "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
-          "similarity_score": 0.672572
+          "similarity_score": 0.672572,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "remote.equipment:0-115",
@@ -1075,11 +1314,15 @@
           "start_char": 0,
           "end_char": 115,
           "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
-          "similarity_score": 0.628073
+          "similarity_score": 0.628073,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": true,
-      "retrieval_latency_ms": 18.869
+      "retrieval_latency_ms": 15.884,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q25",
@@ -1099,7 +1342,10 @@
           "start_char": 140,
           "end_char": 179,
           "text": " enrollment or a qualifying life event.",
-          "similarity_score": 0.630211
+          "similarity_score": 0.630211,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "benefits.health:0-136",
@@ -1109,7 +1355,10 @@
           "start_char": 0,
           "end_char": 136,
           "text": "Health coverage begins on the first day of the month after enrollment is completed. Coverage includes medical, dental, and vision plans.",
-          "similarity_score": 0.628275
+          "similarity_score": 0.628275,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "remote.equipment:95-182",
@@ -1119,11 +1368,15 @@
           "start_char": 95,
           "end_char": 182,
           "text": " cover a desk, chair, monitor, or internet equipment, but not monthly internet service.",
-          "similarity_score": 0.622783
+          "similarity_score": 0.622783,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 15.509
+      "retrieval_latency_ms": 14.739,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q26",
@@ -1143,7 +1396,10 @@
           "start_char": 0,
           "end_char": 149,
           "text": "CedarWorks matches 50% of employee retirement contributions up to 6% of eligible pay. Employees may change their contribution percentage at any time.",
-          "similarity_score": 0.720779
+          "similarity_score": 0.720779,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "remote.location:0-171",
@@ -1153,7 +1409,10 @@
           "start_char": 0,
           "end_char": 171,
           "text": "Remote work must take place from the employee's approved home state. Working temporarily from another state requires written approval from People Operations before travel.",
-          "similarity_score": 0.585816
+          "similarity_score": 0.585816,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "payroll.corrections:123-165",
@@ -1163,11 +1422,15 @@
           "start_char": 123,
           "end_char": 165,
           "text": " are corrected within three business days.",
-          "similarity_score": 0.582122
+          "similarity_score": 0.582122,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 18.171
+      "retrieval_latency_ms": 15.094,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q27",
@@ -1187,7 +1450,10 @@
           "start_char": 0,
           "end_char": 172,
           "text": "Direct-deposit changes submitted in the payroll portal may take one full payroll cycle to become effective. Employees should keep the previous account open until the change",
-          "similarity_score": 0.635585
+          "similarity_score": 0.635585,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "payroll.corrections:0-159",
@@ -1197,7 +1463,10 @@
           "start_char": 0,
           "end_char": 159,
           "text": "Employees should report a suspected pay error to Payroll within five business days of the pay date. Confirmed underpayments are corrected within three business",
-          "similarity_score": 0.617452
+          "similarity_score": 0.617452,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "payroll.schedule:0-125",
@@ -1207,11 +1476,15 @@
           "start_char": 0,
           "end_char": 125,
           "text": "Employees are paid every other Friday. If Friday is a bank holiday, direct deposits are issued on the preceding business day.",
-          "similarity_score": 0.615523
+          "similarity_score": 0.615523,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 13.887
+      "retrieval_latency_ms": 15.252,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q28",
@@ -1231,7 +1504,10 @@
           "start_char": 0,
           "end_char": 174,
           "text": "Employees become eligible for scheduled remote work after 90 days of employment with manager approval. Remote work is not leave and employees keep their normal working hours.",
-          "similarity_score": 0.640037
+          "similarity_score": 0.640037,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.accrual:0-131",
@@ -1241,7 +1517,10 @@
           "start_char": 0,
           "end_char": 131,
           "text": "Full-time employees accrue 1.5 days of paid time off at the end of each completed month. Part-time employees accrue time proportion",
-          "similarity_score": 0.616771
+          "similarity_score": 0.616771,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "benefits.enrollment:0-172",
@@ -1251,11 +1530,15 @@
           "start_char": 0,
           "end_char": 172,
           "text": "New employees have 30 calendar days from their start date to enroll in benefits. After that window, changes generally wait until annual open enrollment or a qualifying life",
-          "similarity_score": 0.605405
+          "similarity_score": 0.605405,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 19.165
+      "retrieval_latency_ms": 19.446,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q29",
@@ -1275,7 +1558,10 @@
           "start_char": 140,
           "end_char": 179,
           "text": " enrollment or a qualifying life event.",
-          "similarity_score": 0.627178
+          "similarity_score": 0.627178,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "expense.receipts:0-154",
@@ -1285,7 +1571,10 @@
           "start_char": 0,
           "end_char": 154,
           "text": "Receipts are required for individual expenses of $25 or more. Approved reimbursements are processed within 10 business days and are separate from payroll.",
-          "similarity_score": 0.600945
+          "similarity_score": 0.600945,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "expense.meals:0-146",
@@ -1295,11 +1584,15 @@
           "start_char": 0,
           "end_char": 146,
           "text": "Business-travel meals are reimbursable up to $60 per day. Client meals above that limit require written director approval and the client's name on",
-          "similarity_score": 0.597753
+          "similarity_score": 0.597753,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 19.269
+      "retrieval_latency_ms": 17.849,
+      "reranking_latency_ms": 0.0
     },
     {
       "question_id": "q30",
@@ -1319,7 +1612,10 @@
           "start_char": 0,
           "end_char": 149,
           "text": "CedarWorks matches 50% of employee retirement contributions up to 6% of eligible pay. Employees may change their contribution percentage at any time.",
-          "similarity_score": 0.594189
+          "similarity_score": 0.594189,
+          "original_rank": 1,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "pto.accrual:98-136",
@@ -1329,7 +1625,10 @@
           "start_char": 98,
           "end_char": 136,
           "text": " employees accrue time proportionally.",
-          "similarity_score": 0.576003
+          "similarity_score": 0.576003,
+          "original_rank": 2,
+          "reranked_position": null,
+          "reranker_score": null
         },
         {
           "chunk_id": "remote.equipment:0-115",
@@ -1339,11 +1638,15 @@
           "start_char": 0,
           "end_char": 115,
           "text": "Eligible remote employees receive a one-time home-office stipend of up to $500. The stipend may cover a desk, chair",
-          "similarity_score": 0.565568
+          "similarity_score": 0.565568,
+          "original_rank": 3,
+          "reranked_position": null,
+          "reranker_score": null
         }
       ],
       "retrieval_hit": false,
-      "retrieval_latency_ms": 13.833
+      "retrieval_latency_ms": 13.69,
+      "reranking_latency_ms": 0.0
     }
   ]
 }

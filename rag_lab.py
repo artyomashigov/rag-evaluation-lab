@@ -8,6 +8,7 @@ from typing import Any, Callable, Mapping
 
 Embedder = Callable[[list[str]], list[list[float]]]
 Tokenizer = Callable[[str], list[tuple[int, int]]]
+Reranker = Callable[[str, list[str]], list[float]]
 
 
 def run_evaluation(
@@ -17,6 +18,7 @@ def run_evaluation(
     *,
     embedder: Embedder | None = None,
     tokenizer: Tokenizer | None = None,
+    reranker: Reranker | None = None,
 ) -> dict[str, Any]:
     """Evaluate a benchmark and save the result for the dashboard."""
     _validate_benchmark(benchmark)
@@ -27,10 +29,22 @@ def run_evaluation(
         "chunk_overlap": configuration.get("chunk_overlap", 5),
         "top_k": configuration["top_k"],
         "reranking": configuration.get("reranking", False),
+        "candidate_pool_size": configuration.get("candidate_pool_size", 10),
         "embedding_model": configuration.get(
             "embedding_model", "Alibaba-NLP/gte-modernbert-base"
         ),
+        "reranker_model": configuration.get(
+            "reranker_model", "cross-encoder/ms-marco-MiniLM-L6-v2"
+        ),
     }
+    if effective_configuration["top_k"] < 1:
+        raise ValueError("Top-k must be positive")
+    if (
+        effective_configuration["reranking"]
+        and effective_configuration["candidate_pool_size"]
+        < effective_configuration["top_k"]
+    ):
+        raise ValueError("Reranking candidate pool must be at least top-k")
     model_name = effective_configuration["embedding_model"]
     tokenize = tokenizer or (lambda text: _local_token_offsets(text, model_name))
     chunks = _chunk_documents(
@@ -40,28 +54,72 @@ def run_evaluation(
         tokenize,
     )
     embed = embedder or (lambda texts: _local_embeddings(texts, model_name))
+    rerank = reranker or (
+        lambda query, texts: _local_reranker_scores(
+            query, texts, effective_configuration["reranker_model"]
+        )
+    )
     chunk_embeddings = embed([chunk["text"] for chunk in chunks])
     question_results = []
 
     for question in questions:
         started = perf_counter()
         query_embedding = embed([question["question"]])[0]
-        ranked = sorted(
+        initial_ranking = sorted(
             (
                 (_dot_product(query_embedding, vector), chunk)
                 for chunk, vector in zip(chunks, chunk_embeddings)
             ),
             reverse=True,
             key=lambda item: item[0],
-        )[: effective_configuration["top_k"]]
+        )
+        candidate_count = (
+            effective_configuration["candidate_pool_size"]
+            if effective_configuration["reranking"]
+            else effective_configuration["top_k"]
+        )
+        candidates = [
+            (round(score, 6), chunk, rank)
+            for rank, (score, chunk) in enumerate(
+                initial_ranking[:candidate_count], start=1
+            )
+        ]
+        retrieval_latency_ms = round((perf_counter() - started) * 1000, 3)
+
+        reranking_latency_ms = 0.0
+        ranked: list[
+            tuple[tuple[float, dict[str, Any], int], float | None]
+        ]
+        if effective_configuration["reranking"]:
+            started = perf_counter()
+            reranker_scores = rerank(
+                question["question"],
+                [candidate[1]["text"] for candidate in candidates],
+            )
+            ranked = [
+                (candidate, float(score))
+                for candidate, score in sorted(
+                    zip(candidates, reranker_scores),
+                    key=lambda item: item[1],
+                    reverse=True,
+                )[: effective_configuration["top_k"]]
+            ]
+            reranking_latency_ms = round((perf_counter() - started) * 1000, 3)
+        else:
+            ranked = [(candidate, None) for candidate in candidates]
+
         evidence = [
             {
-                **chunk,
-                "similarity_score": round(score, 6),
+                **candidate[1],
+                "similarity_score": candidate[0],
+                "original_rank": candidate[2],
+                "reranked_position": position
+                if effective_configuration["reranking"]
+                else None,
+                "reranker_score": round(score, 6) if score is not None else None,
             }
-            for score, chunk in ranked
+            for position, (candidate, score) in enumerate(ranked, start=1)
         ]
-        latency_ms = round((perf_counter() - started) * 1000, 3)
         question_results.append(
             {
                 **question,
@@ -69,7 +127,8 @@ def run_evaluation(
                 "retrieval_hit": question["expected_section"] is not None
                 and question["expected_section"]
                 in {chunk["section_id"] for chunk in evidence},
-                "retrieval_latency_ms": latency_ms,
+                "retrieval_latency_ms": retrieval_latency_ms,
+                "reranking_latency_ms": reranking_latency_ms,
             }
         )
 
@@ -97,6 +156,11 @@ def run_evaluation(
             ),
             "average_retrieval_latency_ms": round(
                 sum(item["retrieval_latency_ms"] for item in question_results)
+                / len(question_results),
+                3,
+            ),
+            "average_reranking_latency_ms": round(
+                sum(item["reranking_latency_ms"] for item in question_results)
                 / len(question_results),
                 3,
             ),
@@ -160,6 +224,22 @@ def _local_embeddings(texts: list[str], model_name: str) -> list[list[float]]:
         texts, normalize_embeddings=True, show_progress_bar=False
     )
     return embeddings.tolist()
+
+
+@lru_cache(maxsize=1)
+def _reranker_model(model_name: str) -> Any:
+    from sentence_transformers import CrossEncoder
+
+    return CrossEncoder(model_name)
+
+
+def _local_reranker_scores(
+    query: str, texts: list[str], model_name: str
+) -> list[float]:
+    scores = _reranker_model(model_name).predict(
+        [(query, text) for text in texts], show_progress_bar=False
+    )
+    return scores.tolist()
 
 
 def _local_token_offsets(text: str, model_name: str) -> list[tuple[int, int]]:
