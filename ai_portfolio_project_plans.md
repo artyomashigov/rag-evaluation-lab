@@ -140,7 +140,7 @@ Avoid real company names, NextEra, SAP, ServiceNow, SuccessFactors, or anything 
 | Feature | Description |
 |---|---|
 | Document loader | Loads 3–5 public/fake documents |
-| Chunking comparison | Compare chunk size 300, 700, 1,200 tokens |
+| Chunking comparison | Compare chunk size 15, 30, 60 tokens |
 | Embeddings | Use local sentence-transformers first |
 | Vector DB | FAISS or Chroma |
 | Test questions | 30–50 predefined questions |
@@ -1222,4 +1222,3 @@ After these three, the portfolio will already look much better for AI/data roles
 # Strongest One-Sentence Portfolio Summary
 
 > I built a set of AI engineering portfolio projects focused on RAG evaluation, controlled agentic workflows, and natural-language analytics, using only synthetic or public data and low-cost public demos.
-

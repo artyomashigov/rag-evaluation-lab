@@ -6,7 +6,7 @@
 
 **Status:** resolved
 
-- [x] The baseline uses 700-token chunks, fixed overlap, top-3 retrieval, and no reranking.
+- [x] The baseline uses 30-token chunks, 5-token overlap, top-3 retrieval, and no reranking.
 - [x] A fixed local embedding model and direct similarity search retrieve evidence without a vector database or network call at query time.
 - [x] Chunk metadata preserves document, section, and character location so expected-section hits remain auditable.
 - [x] Running all 30 questions produces saved question-level results and a retrieval hit-rate summary.

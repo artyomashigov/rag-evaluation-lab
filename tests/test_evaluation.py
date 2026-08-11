@@ -97,6 +97,24 @@ class EvaluationRunnerTest(unittest.TestCase):
         self.assertEqual(result["metrics"]["retrieval_hit_rate"], 1.0)
         self.assertGreaterEqual(result["metrics"]["average_retrieval_latency_ms"], 0)
 
+        with tempfile.TemporaryDirectory() as directory:
+            large_chunks = run_evaluation(
+                benchmark,
+                {**configuration, "chunk_size": 20},
+                Path(directory) / "large.json",
+                embedder=keyword_embeddings,
+                tokenizer=token_offsets,
+            )
+
+        self.assertGreater(
+            result["benchmark_summary"]["chunk_count"],
+            large_chunks["benchmark_summary"]["chunk_count"],
+        )
+        self.assertEqual(
+            large_chunks["questions"][0]["retrieved_evidence"][0]["section_id"],
+            "pto.carryover",
+        )
+
     def test_invalid_benchmark_explains_what_is_wrong(self) -> None:
         benchmark = json.loads(Path("data/benchmark.json").read_text())
 
@@ -151,7 +169,7 @@ class EvaluationRunnerTest(unittest.TestCase):
             {
                 "document_count": 5,
                 "section_count": 15,
-                "chunk_count": 15,
+                "chunk_count": 19,
                 "question_count": 30,
                 "answerable_count": 24,
                 "unanswerable_count": 6,
@@ -206,8 +224,8 @@ class EvaluationRunnerTest(unittest.TestCase):
             self.assertEqual(
                 result["configuration"],
                 {
-                    "chunk_size": 700,
-                    "chunk_overlap": 0,
+                    "chunk_size": 30,
+                    "chunk_overlap": 5,
                     "top_k": 1,
                     "reranking": False,
                     "embedding_model": "Alibaba-NLP/gte-modernbert-base",

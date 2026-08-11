@@ -23,8 +23,8 @@ def run_evaluation(
     documents = benchmark["documents"]
     questions = benchmark["questions"]
     effective_configuration = {
-        "chunk_size": configuration.get("chunk_size", 700),
-        "chunk_overlap": configuration.get("chunk_overlap", 0),
+        "chunk_size": configuration.get("chunk_size", 30),
+        "chunk_overlap": configuration.get("chunk_overlap", 5),
         "top_k": configuration["top_k"],
         "reranking": configuration.get("reranking", False),
         "embedding_model": configuration.get(

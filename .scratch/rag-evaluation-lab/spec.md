@@ -54,7 +54,7 @@ The benchmark will save question-level evidence and summary metrics. A read-only
 - Use four to six fictional employee-policy documents with stable document and section identifiers. Suggested subjects are paid time off, remote work, expenses, benefits, and payroll.
 - Use 30 predefined benchmark questions. Include direct-answer questions, questions whose wording differs from the source, questions requiring distinction between similar policies, and at least six questions that the documents cannot answer.
 - Give each benchmark question an identifier, text, answerability label, expected source section, reference answer or expected abstention, and short reviewer note.
-- Compare exactly five configurations in version one: a 700-token/top-3/no-reranking baseline; 300-token and 1,200-token chunk variants; a top-5 variant; and a reranking-on variant. Each variant changes one baseline setting.
+- Compare exactly five configurations in version one: a 30-token/top-3/no-reranking baseline; 15-token and 60-token chunk variants; a top-5 variant; and a reranking-on variant. Each variant changes one baseline setting.
 - Keep chunk overlap fixed for every configuration. It is recorded as experiment metadata but is not another variable in version one.
 - Fix one local embedding model, one local cross-encoder reranker, and one answer model for the complete benchmark. Model comparison is excluded because it would obscure the three selected variables.
 - Use direct Python plus the installed numerical operations supplied with the embedding stack for similarity search. A vector database is unnecessary for this small fixed corpus and would add setup without improving the experiment.

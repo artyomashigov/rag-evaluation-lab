@@ -37,6 +37,36 @@ st.caption(
     f"reranking {'on' if configuration['reranking'] else 'off'}."
 )
 
+comparison_paths = [
+    Path("results/chunk-15.json"),
+    result_path,
+    Path("results/chunk-60.json"),
+]
+if all(path.exists() for path in comparison_paths):
+    comparisons = [json.loads(path.read_text()) for path in comparison_paths]
+    small, _, large = comparisons
+    st.subheader("Chunk-size comparison")
+    st.dataframe(
+        [
+            {
+                "Chunk size": item["configuration"]["chunk_size"],
+                "Chunks": item["benchmark_summary"]["chunk_count"],
+                "Hit rate": item["metrics"]["retrieval_hit_rate"],
+                "Latency (ms)": item["metrics"]["average_retrieval_latency_ms"],
+            }
+            for item in comparisons
+        ],
+        hide_index=True,
+    )
+    st.caption(
+        f"Here, hit rate ranged from "
+        f"{min(item['metrics']['retrieval_hit_rate'] for item in comparisons):.0%} to "
+        f"{max(item['metrics']['retrieval_hit_rate'] for item in comparisons):.0%}. "
+        f"The 15-token run created {small['benchmark_summary']['chunk_count']} chunks, "
+        f"versus {large['benchmark_summary']['chunk_count']} with 60-token chunks. "
+        "The measured hit rate and latency apply only to this corpus, questions, and machine."
+    )
+
 question_id = st.selectbox(
     "Question",
     questions,

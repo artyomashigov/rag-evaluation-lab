@@ -6,12 +6,17 @@ from rag_lab import run_evaluation
 
 if __name__ == "__main__":
     benchmark = json.loads(Path("data/benchmark.json").read_text())
-    configuration = {
-        "chunk_size": 700,
-        "chunk_overlap": 70,
+    baseline = {
+        "chunk_overlap": 5,
         "top_k": 3,
         "reranking": False,
         "embedding_model": "Alibaba-NLP/gte-modernbert-base",
     }
-    result = run_evaluation(benchmark, configuration, Path("results/baseline.json"))
-    print(f"Saved {result['benchmark_summary']['question_count']} question results")
+    outputs = {
+        15: Path("results/chunk-15.json"),
+        30: Path("results/baseline.json"),
+        60: Path("results/chunk-60.json"),
+    }
+    for chunk_size, output in outputs.items():
+        run_evaluation(benchmark, {**baseline, "chunk_size": chunk_size}, output)
+    print(f"Saved {len(outputs)} chunk-size configurations")
