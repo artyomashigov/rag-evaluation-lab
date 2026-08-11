@@ -113,16 +113,34 @@ def _validate_benchmark(benchmark: Mapping[str, Any]) -> None:
             raise ValueError(f"Duplicate question_id: {label}")
         question_ids.add(label)
 
+        empty = [
+            field
+            for field in ("question_id", "question", "category", "reviewer_note")
+            if not isinstance(question[field], str) or not question[field].strip()
+        ]
+        if empty:
+            raise ValueError(f"Question {label} has empty: {', '.join(empty)}")
+
         expected_section = question["expected_section"]
         if question["answerable"] and expected_section not in section_ids:
             raise ValueError(
                 f"Question {label} references unknown section_id: {expected_section}"
             )
-        if not question["answerable"] and (
-            expected_section is not None or not question["expected_abstention"]
+        if question["answerable"] and (
+            not isinstance(question["reference_answer"], str)
+            or not question["reference_answer"].strip()
+            or question["expected_abstention"] is not False
         ):
             raise ValueError(
-                f"Unanswerable question {label} must have no expected section and must abstain"
+                f"Answerable question {label} requires a reference answer and cannot abstain"
+            )
+        if not question["answerable"] and (
+            expected_section is not None
+            or question["reference_answer"] is not None
+            or question["expected_abstention"] is not True
+        ):
+            raise ValueError(
+                f"Unanswerable question {label} must have no expected section or answer and must abstain"
             )
 
 

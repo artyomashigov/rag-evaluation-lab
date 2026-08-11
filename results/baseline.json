@@ -417,11 +417,11 @@
     },
     {
       "question_id": "q22",
-      "question": "Can a new hire wait until annual open enrollment to choose benefits?",
+      "question": "What happens if a new hire misses the 30-day benefits enrollment window?",
       "category": "similar_policy",
       "answerable": true,
       "expected_section": "benefits.enrollment",
-      "reference_answer": "They may, but their initial enrollment window is the first 30 calendar days after starting.",
+      "reference_answer": "Changes generally wait until annual open enrollment or a qualifying life event.",
       "expected_abstention": false,
       "reviewer_note": "Distinguishes new-hire enrollment from annual open enrollment.",
       "retrieved_evidence": [

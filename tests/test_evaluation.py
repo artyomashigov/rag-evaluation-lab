@@ -20,6 +20,9 @@ class EvaluationRunnerTest(unittest.TestCase):
         incomplete_question = deepcopy(benchmark)
         del incomplete_question["questions"][0]["reviewer_note"]
 
+        inconsistent_question = deepcopy(benchmark)
+        inconsistent_question["questions"][0]["reference_answer"] = None
+
         cases = [
             (duplicate_document, "Duplicate document_id: pto-policy"),
             (
@@ -27,6 +30,10 @@ class EvaluationRunnerTest(unittest.TestCase):
                 "Question q01 references unknown section_id: missing.section",
             ),
             (incomplete_question, "Question q01 is missing: reviewer_note"),
+            (
+                inconsistent_question,
+                "Answerable question q01 requires a reference answer and cannot abstain",
+            ),
         ]
 
         for invalid_benchmark, message in cases:
