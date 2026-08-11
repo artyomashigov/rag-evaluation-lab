@@ -14,5 +14,4 @@ streamlit run app.py
 
 ```bash
 python3 -m unittest discover -s tests
-mypy rag_lab.py run_demo.py app.py tests/test_evaluation.py
 ```
