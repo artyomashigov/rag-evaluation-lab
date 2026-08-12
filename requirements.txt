@@ -1,3 +1,1 @@
-streamlit
-sentence-transformers
-openai
+streamlit==1.61.1
