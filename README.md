@@ -1,8 +1,11 @@
 # RAG Evaluation Lab
 
 [![Tests](https://github.com/artyomashigov/rag-evaluation-lab/actions/workflows/tests.yml/badge.svg)](https://github.com/artyomashigov/rag-evaluation-lab/actions/workflows/tests.yml)
+[![Open the live demo](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://rag-evaluation-lab.streamlit.app/)
 
 An offline experiment that measures why retrieval-augmented generation (RAG) answers fail. It compares five controlled retrieval configurations over 30 questions and makes every answer, citation, retrieved passage, and manual review available for inspection.
+
+**[Open the public dashboard](https://rag-evaluation-lab.streamlit.app/)** — no account or API key required.
 
 ## Problem
 

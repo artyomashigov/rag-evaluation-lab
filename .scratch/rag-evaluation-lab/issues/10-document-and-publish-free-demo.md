@@ -4,16 +4,20 @@
 
 **Blocked by:** 09 — Recruiter-ready results dashboard
 
-**Status:** ready-for-human
+**Status:** resolved
 
 - [x] The README explains the problem, controlled methodology, architecture, setup, benchmark command, results, limitations, and cost protection in plain English.
 - [x] A fresh local checkout can install dependencies, run automated checks, and open the cached dashboard using the documented steps.
-- [ ] Dashboard controls are keyboard usable, charts have text summaries, contrast is readable, and desktop plus narrow layouts remain usable.
+- [x] Dashboard controls are keyboard usable, charts have text summaries, contrast is readable, and desktop plus narrow layouts remain usable.
 - [x] Deployment configuration contains no API keys and does not require a model provider account at runtime.
-- [ ] The public deployment loads the committed benchmark artifacts and works without visitor authentication or paid calls.
-- [ ] The README links to the public demo and includes enough screenshots or result examples to remain useful if hosting is temporarily unavailable.
-- [ ] A final smoke check confirms the public app shows the overview, comparisons, and evidence explorer without exposing secrets.
+- [x] The public deployment loads the committed benchmark artifacts and works without visitor authentication or paid calls.
+- [x] The README links to the public demo and includes enough screenshots or result examples to remain useful if hosting is temporarily unavailable.
+- [x] A final smoke check confirms the public app shows the overview, comparisons, and evidence explorer without exposing secrets.
 
 ## Comments
 
-Implementation, checks, dependency split, CI, and fallback result examples are complete. Publishing remains a human step because Streamlit Community Cloud requires account authentication and GitHub authorization; the final public URL cannot be verified until that deployment is created and made public.
+Published the secret-free saved-results dashboard at https://rag-evaluation-lab.streamlit.app/. Anonymous session bootstrap completed with HTTP 200, the deployed app requires only Streamlit, and automated interaction checks cover the overview, comparison, and evidence explorer using the committed artifacts.
+
+## Answer
+
+Documented the experiment and its limitations, split lightweight hosting from optional benchmark dependencies, added CI and fallback result examples, published the free public dashboard, and verified anonymous access without model credentials or paid calls.
