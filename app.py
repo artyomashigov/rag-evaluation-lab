@@ -18,6 +18,15 @@ configuration = result["configuration"]
 summary = result["benchmark_summary"]
 metrics = result["metrics"]
 questions = {question["question_id"]: question for question in result["questions"]}
+answered_paths = {
+    name: Path(f"results/answered-{name}.json")
+    for name in ("baseline", "chunk-15", "chunk-60", "top-5", "reranked")
+}
+answered_results = {
+    name: json.loads(path.read_text())
+    for name, path in answered_paths.items()
+    if path.exists()
+}
 
 columns = st.columns(4)
 columns[0].metric("Documents", summary["document_count"])
@@ -36,6 +45,38 @@ st.caption(
     f"top-{configuration['top_k']}, and "
     f"reranking {'on' if configuration['reranking'] else 'off'}."
 )
+
+if len(answered_results) == 5:
+    lowest_unsupported = min(
+        answered_results,
+        key=lambda name: answered_results[name]["metrics"]["unsupported_answer_rate"],
+    )
+    st.subheader("Audited answer comparison")
+    st.dataframe(
+        [
+            {
+                "Configuration": name,
+                "Retrieval hit rate": item["metrics"]["retrieval_hit_rate"],
+                "Unsupported-answer rate": item["metrics"][
+                    "unsupported_answer_rate"
+                ],
+                "Correct-abstention rate": item["metrics"][
+                    "correct_abstention_rate"
+                ],
+                "Total latency (ms)": item["metrics"]["average_total_latency_ms"],
+                "Tokens": item["metrics"]["input_tokens"]
+                + item["metrics"]["output_tokens"],
+                "Cost (USD)": item["metrics"]["estimated_cost_usd"],
+            }
+            for name, item in answered_results.items()
+        ],
+        hide_index=True,
+    )
+    st.caption(
+        f"All 150 answers were generated locally and manually reviewed. "
+        f"{lowest_unsupported} had the lowest unsupported-answer rate here; this result "
+        "applies only to this synthetic corpus, question set, and Qwen 2.5 3B."
+    )
 
 comparison_paths = [
     Path("results/chunk-15.json"),
@@ -128,12 +169,30 @@ if reranked_result:
         "That judgment is specific to this small benchmark."
     )
 
+selected_configuration = st.selectbox(
+    "Configuration",
+    answered_results or {"baseline": result},
+)
+selected_result = answered_results.get(selected_configuration, result)
+review_labels = sorted(
+    {item.get("review_label", "unreviewed") for item in selected_result["questions"]}
+)
+selected_labels = st.multiselect("Review label", review_labels, default=review_labels)
+filtered_questions = {
+    item["question_id"]: item
+    for item in selected_result["questions"]
+    if item.get("review_label", "unreviewed") in selected_labels
+}
+if not filtered_questions:
+    st.info("No questions match the selected review labels.")
+    st.stop()
+
 question_id = st.selectbox(
     "Question",
-    questions,
-    format_func=lambda identifier: questions[identifier]["question"],
+    filtered_questions,
+    format_func=lambda identifier: filtered_questions[identifier]["question"],
 )
-question = questions[question_id]
+question = filtered_questions[question_id]
 st.subheader(question["question"])
 st.metric("Expected section retrieved", "Yes" if question["retrieval_hit"] else "No")
 st.write("Expected section:", question["expected_section"] or "No source expected")
@@ -146,19 +205,9 @@ for evidence in question["retrieved_evidence"]:
     )
     st.write(evidence["text"])
 
-answered_path = Path("results/answered-baseline.json")
-answered_result = json.loads(answered_path.read_text()) if answered_path.exists() else None
-answered_question = None
+answered_result = answered_results.get(selected_configuration)
 if answered_result:
-    answered_question = next(
-        (
-            item
-            for item in answered_result["questions"]
-            if item["question_id"] == question_id
-        ),
-        None,
-    )
-if answered_result and answered_question:
+    answered_question = question
     st.subheader("Saved answer")
     st.write(answered_question["answer"])
     st.write(
@@ -181,10 +230,11 @@ if answered_result and answered_question:
         f"Model {answered_question['answer_model']} · price snapshot "
         f"{answered_result['pricing']['date']} · saved result only; no dashboard API call"
     )
-elif answered_result:
-    st.info("This question has not been generated yet; the paid run can resume safely.")
+    st.write("Manual review:", answered_question["review_label"])
+    if answered_question["answer_review_note"]:
+        st.write("Reviewer note:", answered_question["answer_review_note"])
 
-if reranked_result:
+if reranked_result and selected_configuration == "reranked":
     reranked_question = next(
         item for item in reranked_result["questions"] if item["question_id"] == question_id
     )

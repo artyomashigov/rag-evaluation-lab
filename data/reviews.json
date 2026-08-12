@@ -1,0 +1,535 @@
+{
+  "chunk-15": {
+    "q01": {
+      "label": "supported"
+    },
+    "q02": {
+      "label": "supported"
+    },
+    "q03": {
+      "label": "supported"
+    },
+    "q04": {
+      "label": "unsupported",
+      "note": "The answer adds that employees keep their benefits, but the cited chunk does not support that claim."
+    },
+    "q05": {
+      "label": "supported"
+    },
+    "q06": {
+      "label": "supported"
+    },
+    "q07": {
+      "label": "supported"
+    },
+    "q08": {
+      "label": "supported"
+    },
+    "q09": {
+      "label": "unsupported",
+      "note": "The answer reverses the booking rule and mixes in an unrelated remote-work approval."
+    },
+    "q10": {
+      "label": "supported"
+    },
+    "q11": {
+      "label": "unsupported",
+      "note": "The answer adds an unsupported generalization about enrollment events initiating coverage."
+    },
+    "q12": {
+      "label": "supported"
+    },
+    "q13": {
+      "label": "unsupported",
+      "note": "The answer incorrectly says vacation time carries over at the end of each completed month."
+    },
+    "q14": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q15": {
+      "label": "supported"
+    },
+    "q16": {
+      "label": "supported"
+    },
+    "q17": {
+      "label": "supported"
+    },
+    "q18": {
+      "label": "unsupported",
+      "note": "The answer implies People Operations approval is the only requirement and omits the manager approval and business reason."
+    },
+    "q19": {
+      "label": "correct_abstention",
+      "note": "The retriever missed the expected section, so the supplied evidence could not answer the question."
+    },
+    "q20": {
+      "label": "supported"
+    },
+    "q21": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q22": {
+      "label": "supported"
+    },
+    "q23": {
+      "label": "supported"
+    },
+    "q24": {
+      "label": "supported"
+    },
+    "q25": {
+      "label": "correct_abstention"
+    },
+    "q26": {
+      "label": "correct_abstention"
+    },
+    "q27": {
+      "label": "correct_abstention"
+    },
+    "q28": {
+      "label": "correct_abstention"
+    },
+    "q29": {
+      "label": "correct_abstention"
+    },
+    "q30": {
+      "label": "correct_abstention"
+    }
+  },
+  "baseline": {
+    "q01": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q02": {
+      "label": "supported"
+    },
+    "q03": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q04": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q05": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q06": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q07": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q08": {
+      "label": "supported"
+    },
+    "q09": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q10": {
+      "label": "supported"
+    },
+    "q11": {
+      "label": "supported"
+    },
+    "q12": {
+      "label": "supported"
+    },
+    "q13": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q14": {
+      "label": "supported"
+    },
+    "q15": {
+      "label": "supported"
+    },
+    "q16": {
+      "label": "supported"
+    },
+    "q17": {
+      "label": "supported"
+    },
+    "q18": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q19": {
+      "label": "correct_abstention",
+      "note": "The retriever missed the expected section, so the supplied evidence could not answer the question."
+    },
+    "q20": {
+      "label": "supported"
+    },
+    "q21": {
+      "label": "unsupported",
+      "note": "The answer says a receipt is sufficient, but the cited meal policy also requires written director approval and the client's name."
+    },
+    "q22": {
+      "label": "unsupported",
+      "note": "The answer adds an unrelated payroll-correction claim to the benefits response."
+    },
+    "q23": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q24": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q25": {
+      "label": "correct_abstention"
+    },
+    "q26": {
+      "label": "correct_abstention"
+    },
+    "q27": {
+      "label": "correct_abstention"
+    },
+    "q28": {
+      "label": "correct_abstention"
+    },
+    "q29": {
+      "label": "correct_abstention"
+    },
+    "q30": {
+      "label": "correct_abstention"
+    }
+  },
+  "chunk-60": {
+    "q01": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q02": {
+      "label": "supported"
+    },
+    "q03": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q04": {
+      "label": "supported"
+    },
+    "q05": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q06": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q07": {
+      "label": "unsupported",
+      "note": "The answer says receipts are required only over $25; the cited policy includes expenses exactly at $25."
+    },
+    "q08": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q09": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q10": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q11": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q12": {
+      "label": "supported"
+    },
+    "q13": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q14": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q15": {
+      "label": "supported"
+    },
+    "q16": {
+      "label": "supported"
+    },
+    "q17": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q18": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q19": {
+      "label": "correct_abstention",
+      "note": "The retriever missed the expected section, so the supplied evidence could not answer the question."
+    },
+    "q20": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q21": {
+      "label": "unsupported",
+      "note": "The answer says a receipt alone is enough despite the cited director-approval requirement."
+    },
+    "q22": {
+      "label": "supported"
+    },
+    "q23": {
+      "label": "supported"
+    },
+    "q24": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q25": {
+      "label": "correct_abstention"
+    },
+    "q26": {
+      "label": "correct_abstention"
+    },
+    "q27": {
+      "label": "correct_abstention"
+    },
+    "q28": {
+      "label": "correct_abstention"
+    },
+    "q29": {
+      "label": "correct_abstention"
+    },
+    "q30": {
+      "label": "correct_abstention"
+    }
+  },
+  "top-5": {
+    "q01": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q02": {
+      "label": "supported"
+    },
+    "q03": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q04": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q05": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q06": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q07": {
+      "label": "supported"
+    },
+    "q08": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q09": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q10": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q11": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q12": {
+      "label": "supported"
+    },
+    "q13": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q14": {
+      "label": "unsupported",
+      "note": "The answer turns a one-payroll-cycle delay into a specific next-Friday promise that the cited text does not guarantee."
+    },
+    "q15": {
+      "label": "supported"
+    },
+    "q16": {
+      "label": "supported"
+    },
+    "q17": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q18": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q19": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q20": {
+      "label": "supported"
+    },
+    "q21": {
+      "label": "supported"
+    },
+    "q22": {
+      "label": "supported"
+    },
+    "q23": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q24": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q25": {
+      "label": "correct_abstention"
+    },
+    "q26": {
+      "label": "correct_abstention"
+    },
+    "q27": {
+      "label": "correct_abstention"
+    },
+    "q28": {
+      "label": "correct_abstention"
+    },
+    "q29": {
+      "label": "correct_abstention"
+    },
+    "q30": {
+      "label": "correct_abstention"
+    }
+  },
+  "reranked": {
+    "q01": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q02": {
+      "label": "supported"
+    },
+    "q03": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q04": {
+      "label": "supported"
+    },
+    "q05": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q06": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q07": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q08": {
+      "label": "supported"
+    },
+    "q09": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q10": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q11": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q12": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q13": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q14": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q15": {
+      "label": "supported"
+    },
+    "q16": {
+      "label": "supported"
+    },
+    "q17": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q18": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q19": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q20": {
+      "label": "supported"
+    },
+    "q21": {
+      "label": "unsupported",
+      "note": "The answer says a receipt alone is enough and ignores the required director approval and client name."
+    },
+    "q22": {
+      "label": "unsupported",
+      "note": "The answer adds an unrelated payroll-correction claim to the benefits response."
+    },
+    "q23": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q24": {
+      "label": "unsupported",
+      "note": "The model abstained even though the benchmark question is answerable."
+    },
+    "q25": {
+      "label": "correct_abstention"
+    },
+    "q26": {
+      "label": "correct_abstention"
+    },
+    "q27": {
+      "label": "correct_abstention"
+    },
+    "q28": {
+      "label": "correct_abstention"
+    },
+    "q29": {
+      "label": "correct_abstention"
+    },
+    "q30": {
+      "label": "correct_abstention"
+    }
+  }
+}

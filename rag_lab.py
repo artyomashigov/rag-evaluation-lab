@@ -4,6 +4,7 @@ from functools import lru_cache
 from pathlib import Path
 from time import perf_counter
 from typing import Any, Callable, Mapping
+from urllib.request import Request, urlopen
 
 
 Embedder = Callable[[list[str]], list[list[float]]]
@@ -21,6 +22,11 @@ ANSWER_FIELDS = (
     "generation_latency_ms",
     "estimated_cost_usd",
 )
+ANSWER_INSTRUCTIONS = (
+    "Answer only from the supplied evidence. Cite source section IDs. "
+    "If the evidence is insufficient, abstain and return no citations. "
+    "Use at most 30 words and copy each cited section_id exactly."
+)
 
 
 def run_evaluation(
@@ -32,6 +38,7 @@ def run_evaluation(
     tokenizer: Tokenizer | None = None,
     reranker: Reranker | None = None,
     answer_generator: AnswerGenerator | None = None,
+    reviews: Mapping[str, Mapping[str, str]] | None = None,
     allow_paid_calls: bool = False,
 ) -> dict[str, Any]:
     """Evaluate a benchmark and save the result for the dashboard."""
@@ -52,10 +59,15 @@ def run_evaluation(
         ),
     }
     generate_answers = bool(configuration.get("generate_answers", False))
+    answer_provider = str(configuration.get("answer_provider", "openai"))
     answer_model = str(configuration.get("answer_model", "gpt-5.6-luna"))
     if generate_answers:
         effective_configuration.update(
-            {"generate_answers": True, "answer_model": answer_model}
+            {
+                "generate_answers": True,
+                "answer_provider": answer_provider,
+                "answer_model": answer_model,
+            }
         )
     pricing = configuration.get(
         "price_snapshot",
@@ -66,7 +78,9 @@ def run_evaluation(
             "output_usd_per_million_tokens": 1.2,
         },
     )
-    if generate_answers and not allow_paid_calls:
+    if answer_provider not in {"openai", "ollama"}:
+        raise ValueError(f"Unknown answer provider: {answer_provider}")
+    if generate_answers and answer_provider == "openai" and not allow_paid_calls:
         raise PermissionError("Answer generation requires allow_paid_calls=True")
     if effective_configuration["top_k"] < 1:
         raise ValueError("Top-k must be positive")
@@ -90,7 +104,9 @@ def run_evaluation(
             query, texts, effective_configuration["reranker_model"]
         )
     )
-    generate_answer = answer_generator or _openai_answer
+    generate_answer = answer_generator or (
+        _ollama_answer if answer_provider == "ollama" else _openai_answer
+    )
     chunk_embeddings = embed([chunk["text"] for chunk in chunks])
     question_results = []
     completed_answers: dict[str, dict[str, Any]] = {}
@@ -234,6 +250,33 @@ def run_evaluation(
                 },
             )
 
+    if reviews is not None:
+        valid_labels = {"supported", "unsupported", "correct_abstention"}
+        for question_result in question_results:
+            review = reviews.get(question_result["question_id"])
+            if review is None or review.get("label") not in valid_labels:
+                raise ValueError("Every generated answer requires a valid review label")
+            if (
+                (review["label"] == "supported" and question_result["abstained"])
+                or (
+                    review["label"] == "correct_abstention"
+                    and (
+                        not question_result["abstained"]
+                        or (
+                            not question_result["expected_abstention"]
+                            and question_result["retrieval_hit"]
+                        )
+                    )
+                )
+            ):
+                raise ValueError("Review label contradicts the saved answer")
+            question_result.update(
+                {
+                    "review_label": review["label"],
+                    "answer_review_note": review.get("note", ""),
+                }
+            )
+
     answerable_results = [result for result in question_results if result["answerable"]]
     result: dict[str, Any] = {
         "configuration": effective_configuration,
@@ -287,6 +330,38 @@ def run_evaluation(
                 ),
             }
         )
+        if reviews is not None:
+            result["metrics"].update(
+                {
+                    "unsupported_answer_rate": round(
+                        sum(
+                            item["review_label"] == "unsupported"
+                            for item in question_results
+                        )
+                        / len(question_results),
+                        4,
+                    ),
+                    "correct_abstention_rate": round(
+                        sum(
+                            item["expected_abstention"]
+                            and item["review_label"] == "correct_abstention"
+                            for item in question_results
+                        )
+                        / sum(not item["answerable"] for item in question_results),
+                        4,
+                    ),
+                    "average_total_latency_ms": round(
+                        sum(
+                            item["retrieval_latency_ms"]
+                            + item["reranking_latency_ms"]
+                            + item["generation_latency_ms"]
+                            for item in question_results
+                        )
+                        / len(question_results),
+                        3,
+                    ),
+                }
+            )
     _write_json(output, result)
     return result
 
@@ -406,10 +481,7 @@ def _openai_answer(
         input=[
             {
                 "role": "system",
-                "content": (
-                    "Answer only from the supplied evidence. Cite source section IDs. "
-                    "If the evidence is insufficient, abstain and return no citations."
-                ),
+                "content": ANSWER_INSTRUCTIONS,
             },
             {
                 "role": "user",
@@ -451,6 +523,71 @@ def _openai_answer(
     generated = json.loads(response.output_text)
     generated["input_tokens"] = response.usage.input_tokens
     generated["output_tokens"] = response.usage.output_tokens
+    return generated
+
+
+def _ollama_answer(
+    question: str, evidence: list[dict[str, Any]], model_name: str
+) -> dict[str, Any]:
+    payload = {
+        "model": model_name,
+        "stream": False,
+        "format": {
+            "type": "object",
+            "properties": {
+                "answer": {"type": "string"},
+                "citations": {"type": "array", "items": {"type": "string"}},
+                "abstained": {"type": "boolean"},
+            },
+            "required": ["answer", "citations", "abstained"],
+        },
+        "options": {"temperature": 0, "num_predict": 128},
+        "messages": [
+            {
+                "role": "system",
+                "content": ANSWER_INSTRUCTIONS,
+            },
+            {
+                "role": "user",
+                "content": json.dumps(
+                    {
+                        "question": question,
+                        "evidence": [
+                            {"section_id": item["section_id"], "text": item["text"]}
+                            for item in evidence
+                        ],
+                    }
+                ),
+            },
+        ],
+    }
+    request = Request(
+        "http://127.0.0.1:11434/api/chat",
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+    with urlopen(request, timeout=120) as response:
+        result = json.load(response)
+    generated = json.loads(result["message"]["content"])
+    section_ids = {item["section_id"] for item in evidence}
+    generated["citations"] = list(
+        dict.fromkeys(
+            section_id
+            for citation in generated["citations"]
+            for section_id in section_ids
+            if section_id in citation
+        )
+    )
+    if generated["abstained"] or not generated["citations"]:
+        generated.update(
+            {
+                "answer": "The supplied documents do not contain enough information.",
+                "citations": [],
+                "abstained": True,
+            }
+        )
+    generated["input_tokens"] = result["prompt_eval_count"]
+    generated["output_tokens"] = result["eval_count"]
     return generated
 
 
